@@ -1,0 +1,25 @@
+.dsIn-img{
+    width: 65%;
+height: 40px !important;
+}
+.dsIn-img1{
+    width: 40%;
+height: 40px !important;
+}
+.dsIn-img2{
+    width: 40%;
+    height: 130px !important;
+}
+.ds-ju{
+    margin-top: -23px;
+    padding: 10px !important;
+}
+
+.foo-h6{
+    font-size: smaller;
+    color: darkgray;
+    text-align: center;
+}
+.carousel-inner{
+    border-radius: 8px;
+}
