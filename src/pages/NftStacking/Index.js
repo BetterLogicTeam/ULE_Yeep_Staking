@@ -299,30 +299,30 @@ function NftStaking() {
           let check_Nft_Balance= await Ule_100_ContractOf.methods.ownerOf(tokenid).call();
           console.log("check_Nft_Balance",check_Nft_Balance);
        
-          // if(check_Nft_Balance==acc){
-          // let Check_staked_id= await ULE_Staking_ContractOf.methods.check(tokenid).call();
-          // if(Check_staked_id==false){
-            // await Ule_100_ContractOf.methods.setApprovalForAll(ULE_NFT_Staking_100, true).send({
-            //   from: acc
-            // })
+          if(check_Nft_Balance==acc){
+          let Check_staked_id= await ULE_Staking_ContractOf.methods.check(tokenid).call();
+          if(Check_staked_id==false){
+            await Ule_100_ContractOf.methods.setApprovalForAll(ULE_NFT_Staking_100, true).send({
+              from: acc
+            })
           
            toast.success("Successfully Approved")
 
-            // let hash = await ULE_Staking_ContractOf.methods.Stake(tokenid).send({
-            //   from: acc,
-            //   // value: totalMintingPriceBNB.toString()
+            let hash = await ULE_Staking_ContractOf.methods.Stake(tokenid).send({
+              from: acc,
+              // value: totalMintingPriceBNB.toString()
   
-            // })
+            })
   
-            // console.log("hash", hash);
-            // hash = hash.transactionHash
-            // console.log("user_Address", ress);
+            console.log("hash", hash);
+            hash = hash.transactionHash
+            console.log("user_Address", ress);
   
             let postapi = await axios.post('https://ule-nft-api.herokuapp.com/nftStaking', {
               "uid": uId_user,
               "address": acc,
               "tokenid": tokenid,
-              "txn": "0124"
+              "txn": hash
             })
             console.log("Api Resp", postapi);
   
@@ -331,16 +331,16 @@ function NftStaking() {
             // alert("Transaction Confirmed")
             window.location.reload()
 
-          // }else{
-          //   alert("NFT Id Already Staked. ")
+          }else{
+            alert("NFT Id Already Staked. ")
 
-          // }
+          }
 
 
            
-          // }else{
-          //   alert("You are not owner of this ID. ")
-          // }
+          }else{
+            alert("You are not owner of this ID. ")
+          }
 
          
         }

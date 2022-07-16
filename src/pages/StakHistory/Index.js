@@ -17,6 +17,8 @@ function StakHistory() {
   const [filterValue, setFilterValue] = useState("");
   const [userInfo, setUserInfo] = useState(null);
   const [tokenid, setTokenId] = useState("");
+  const [spinner, setspinner] = useState(true);
+
 
   const WalletAddress = async () => {
 
@@ -63,7 +65,7 @@ function StakHistory() {
   const Unstake_NFT = async () => {
     const acc = await loadWeb3()
 
-
+    setspinner(true)
 
     const user = localStorage.getItem("user");
     let ress = JSON.parse(user);
@@ -72,6 +74,8 @@ function StakHistory() {
     let user_Address
     let RowId
     try {
+      setspinner(true)
+
       const res = await axios.get(`https://yeepule-nft-api.herokuapp.com/get_user_info?id=${uId_user}`);
       // console.log("res", res);
       user_Address = res?.data?.data[0].EthAddress
@@ -82,11 +86,15 @@ function StakHistory() {
 
     } catch (e) {
       console.log("Fatch Api", e);
+      // setspinner(false)
+
     }
 
     // console.log("userInfo",user_Address);
 
     try {
+      setspinner(true)
+
       let refReport_length = refReport.length
       let getTokId
       for (let i = 0; i < refReport_length; i++) {
@@ -105,61 +113,69 @@ function StakHistory() {
 
       let ConditionalApiIncom = await axios.post('https://yeepule-nft-api.herokuapp.com/unstakeNftCondition', {
         "uid": uId_user,
-      
+
       })
       let inComeData = ConditionalApiIncom.data.data
       console.log("ConditionalApi", ConditionalApiIncom.data.data);
-      if (DayComp == 0 || inComeData==0 ) {
+      if (DayComp == 0 || inComeData == 0) {
+        setspinner(true)
+
         if (user_Address == acc) {
+          setspinner(true)
 
 
           // console.log("refReport",refReport.length);
-         
+
           alert("Are you sure, You want to unstake..?")
-  
+
           const web3 = await window.web3;
           let Ule_100_ContractOf = new web3.eth.Contract(ULE_NFT_100_ABI, ULE_NFT_100);
           let ULE_Staking_ContractOf = new web3.eth.Contract(Ule_NFT_Staking_100_ABI, ULE_NFT_Staking_100);
           let OwnCheck = await ULE_Staking_ContractOf.methods.IDOwnerCheck(user_Address, getTokId).call();
           console.log("OwnCheck", OwnCheck);
           console.log("RowId", RowId);
-  
+
           if (OwnCheck == true) {
             let hash = await ULE_Staking_ContractOf.methods.unstake(getTokId, user_Address).send({
               from: acc,
               // value: totalMintingPriceBNB.toString()
-  
+
             })
-  
+
             console.log("hash", hash);
             hash = hash.transactionHash
             console.log("user_Address", ress);
-  
+
             let postapi = await axios.post('https://ule-nft-api.herokuapp.com/nftUnstkaing', {
               "uid": uId_user,
               "address": acc,
-             "rowid":RowId,
+              "rowid": RowId,
               "txn": hash
             })
             console.log("Api Resp", postapi);
-  
-  
+
+
             toast.success("Transaction Confirmed")
             // alert("Transaction Confirmed")
-  
+
           } else {
             alert("you are not owner of this id")
+            setspinner(false)
+
           }
-  
-  
-  
-  
+
+
+
+
         } else {
           alert("Account Mismatch")
+          setspinner(false)
+
         }
 
-      }else{
-      toast.error(`You can’t unstake till 250 days of your staking or 290% of your total earning whichever is earlier Remaning Days: ${DayComp}`)
+      } else {
+        toast.error(`You can’t unstake till 250 days of your staking or 290% of your total earning whichever is earlier Remaning Days: ${DayComp}`)
+        setspinner(false)
 
       }
 
@@ -169,6 +185,8 @@ function StakHistory() {
       console.log("Erroe While Call Staking Fuction", error);
       toast.error("Transaction Failed")
       alert("Transaction Failed")
+      setspinner(false)
+
 
     }
 
@@ -188,7 +206,25 @@ function StakHistory() {
 
         date: moment(item?.edate).format("M/D/YYYY h:m:s A"),
         date2: moment(item?.top_update).format("M/D/YYYY h:m:s A"),
-        date2: (<><button className="btn btn-success" onClick={() => Unstake_NFT()}>Unstake</button></>)
+        date2: (<><button className="btn btn-success" onClick={() => Unstake_NFT()}>
+
+          {
+            spinner ? (
+              <>
+               unstake
+              </>
+            ) :
+              (
+                <>
+                 <div class="spinner-border" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+
+                </>
+              )
+          }
+
+        </button></>)
 
       });
       // if (filterValue == "" || filterValue == "1") {
