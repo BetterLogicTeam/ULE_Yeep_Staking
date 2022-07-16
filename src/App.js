@@ -4,6 +4,8 @@ import store from "./store";
 import "./App.css";
 import ProtectedRoute from "./utils/routes/protectedRoutes";
 import PublicRoutes from "./utils/routes/publicRoutes";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import {
   Home,
@@ -33,6 +35,7 @@ import UnStake_History from "./pages/UnStakHistory/UnStake_History";
 function App() {
   return (
     <Provider store={store}>
+        <ToastContainer />
       <Router>
         <Switch>
           <ProtectedRoute exact path="/activate" component={Activate} />

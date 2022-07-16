@@ -52,6 +52,8 @@ function StakHistory() {
 
   };
 
+
+
   useEffect(() => {
     getAllData();
     // WalletAddress()
@@ -60,7 +62,8 @@ function StakHistory() {
 
   const Unstake_NFT = async () => {
     const acc = await loadWeb3()
-    alert("Are you sure, You want to unstake..?")
+
+
 
     const user = localStorage.getItem("user");
     let ress = JSON.parse(user);
@@ -84,57 +87,82 @@ function StakHistory() {
     // console.log("userInfo",user_Address);
 
     try {
-      if (user_Address == acc) {
-
-
-        // console.log("refReport",refReport.length);
-        let refReport_length = refReport.length
-        let getTokId
-        for (let i = 0; i < refReport_length; i++) {
-          getTokId = refReport[i].tokenid
-          RowId=refReport[i].id
-        }
-
-        const web3 = await window.web3;
-        let Ule_100_ContractOf = new web3.eth.Contract(ULE_NFT_100_ABI, ULE_NFT_100);
-        let ULE_Staking_ContractOf = new web3.eth.Contract(Ule_NFT_Staking_100_ABI, ULE_NFT_Staking_100);
-        let OwnCheck = await ULE_Staking_ContractOf.methods.IDOwnerCheck(user_Address, getTokId).call();
-        console.log("OwnCheck", OwnCheck);
-        console.log("RowId", RowId);
-
-        if (OwnCheck == true) {
-          let hash = await ULE_Staking_ContractOf.methods.unstake(getTokId, user_Address).send({
-            from: acc,
-            // value: totalMintingPriceBNB.toString()
-
-          })
-
-          console.log("hash", hash);
-          hash = hash.transactionHash
-          console.log("user_Address", ress);
-
-          let postapi = await axios.post('https://ule-nft-api.herokuapp.com/nftUnstkaing', {
-            "uid": uId_user,
-            "address": acc,
-           "rowid":RowId,
-            "txn": hash
-          })
-          console.log("Api Resp", postapi);
-
-
-          toast.success("Transaction Confirmed")
-          alert("Transaction Confirmed")
-
-        } else {
-          alert("you are not owner of this id")
-        }
-
-
-
-
-      } else {
-        alert("Account Mismatch")
+      let refReport_length = refReport.length
+      let getTokId
+      for (let i = 0; i < refReport_length; i++) {
+        getTokId = refReport[i].tokenid
+        RowId = refReport[i].id
       }
+
+      let ConditionalApi = await axios.post('https://yeepule-nft-api.herokuapp.com/unstakeNftDayCondition', {
+        "uid": uId_user,
+        "address": acc,
+        "rowid": RowId,
+
+      })
+      let DayComp = ConditionalApi.data.data
+      console.log("ConditionalApi", ConditionalApi.data.data);
+
+      let ConditionalApiIncom = await axios.post('https://yeepule-nft-api.herokuapp.com/unstakeNftCondition', {
+        "uid": uId_user,
+      
+      })
+      let inComeData = ConditionalApiIncom.data.data
+      console.log("ConditionalApi", ConditionalApiIncom.data.data);
+      if (DayComp == 0 || inComeData==0 ) {
+        if (user_Address == acc) {
+
+
+          // console.log("refReport",refReport.length);
+         
+          alert("Are you sure, You want to unstake..?")
+  
+          const web3 = await window.web3;
+          let Ule_100_ContractOf = new web3.eth.Contract(ULE_NFT_100_ABI, ULE_NFT_100);
+          let ULE_Staking_ContractOf = new web3.eth.Contract(Ule_NFT_Staking_100_ABI, ULE_NFT_Staking_100);
+          let OwnCheck = await ULE_Staking_ContractOf.methods.IDOwnerCheck(user_Address, getTokId).call();
+          console.log("OwnCheck", OwnCheck);
+          console.log("RowId", RowId);
+  
+          if (OwnCheck == true) {
+            let hash = await ULE_Staking_ContractOf.methods.unstake(getTokId, user_Address).send({
+              from: acc,
+              // value: totalMintingPriceBNB.toString()
+  
+            })
+  
+            console.log("hash", hash);
+            hash = hash.transactionHash
+            console.log("user_Address", ress);
+  
+            let postapi = await axios.post('https://ule-nft-api.herokuapp.com/nftUnstkaing', {
+              "uid": uId_user,
+              "address": acc,
+             "rowid":RowId,
+              "txn": hash
+            })
+            console.log("Api Resp", postapi);
+  
+  
+            toast.success("Transaction Confirmed")
+            // alert("Transaction Confirmed")
+  
+          } else {
+            alert("you are not owner of this id")
+          }
+  
+  
+  
+  
+        } else {
+          alert("Account Mismatch")
+        }
+
+      }else{
+      toast.error(`You can’t unstake till 250 days of your staking or 290% of your total earning whichever is earlier Remaning Days: ${DayComp}`)
+
+      }
+
 
 
     } catch (error) {
@@ -148,6 +176,7 @@ function StakHistory() {
 
   useEffect(() => {
     let arr = [];
+    console.log("refReport", refReport);
     refReport.forEach((item, index) => {
 
       arr.push({
