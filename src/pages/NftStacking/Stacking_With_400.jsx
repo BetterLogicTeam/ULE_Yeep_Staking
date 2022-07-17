@@ -276,7 +276,7 @@ export default function Stacking_With_400() {
             if (check_Nft_Balance == acc) {
               // let Check_staked_id = await ULE_Staking_ContractOf.methods.check(tokenid).call();
               // if (Check_staked_id == false) {
-              await Ule_100_ContractOf.methods.setApprovalForAll(ULE_NFT_Staking_100, true).send({
+              await Ule_100_ContractOf.methods.setApprovalForAll(ULE_NFT_Staking_400, true).send({
                 from: acc
               })
   

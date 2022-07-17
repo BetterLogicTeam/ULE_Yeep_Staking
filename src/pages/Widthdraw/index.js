@@ -186,7 +186,7 @@ export const Widthdraw = () => {
   };
 
   const addTronWalletAddress = async () => {
-    if (tronAdd.length > 5) {
+    // if (tronAdd.length > 5) {
       try {
         let ress = JSON.parse(user);
         let uId = ress?.user_id;
@@ -202,9 +202,9 @@ export const Widthdraw = () => {
 
         toast.error("Something went Wrong !");
       }
-    } else {
-      toast.error("Enter Valid Tron address!");
-    }
+    // } else {
+    //   toast.error("Enter Valid Tron address!");
+    // }
   };
   const getLastTransaction = async () => {
     try {
@@ -217,129 +217,128 @@ export const Widthdraw = () => {
     }
   };
 
-  const DrawTicket = async () => {
-    setLoadingTrans(true);
-    let maxWithdraw = await getMaxWithdraw();
-    let lastTransaction = await getLastTransaction();
+  // const DrawTicket = async () => {
+  //   setLoadingTrans(true);
+  //   let maxWithdraw = await getMaxWithdraw();
+  //   let lastTransaction = await getLastTransaction();
 
-    if (depositeAmount > trxtBalance) {
-      alert("Insufficiant Wallet Balance !");
-      setLoadingTrans(false);
-      return;
-    }
-    if (depositeAmount < 10) {
-      alert("Withdraw Request can be made on Minimum 10 USD !");
-      setLoadingTrans(false);
-      return;
-    }
-    if (depositeAmount > 500) {
-      alert("Withdraw Request can be made on Maximum 500 USD !");
-      setLoadingTrans(false);
+  //   if (depositeAmount > trxtBalance) {
+  //     alert("Insufficiant Wallet Balance !");
+  //     setLoadingTrans(false);
+  //     return;
+  //   }
+  //   if (depositeAmount < 10) {
+  //     alert("Withdraw Request can be made on Minimum 10 USD !");
+  //     setLoadingTrans(false);
+  //     return;
+  //   }
+  //   if (depositeAmount > 500) {
+  //     alert("Withdraw Request can be made on Maximum 500 USD !");
+  //     setLoadingTrans(false);
 
-      return;
-    }
-    if (accountAddress === "") {
-      alert("TronLink is not connected !");
-      setLoadingTrans(false);
+  //     return;
+  //   }
+  //   // if (accountAddress === "") {
+  //   //   alert("TronLink is not connected !");
+  //   //   setLoadingTrans(false);
 
-      return;
-    }
+  //   //   return;
+  //   // }
 
-    if (
-      accountAddress === "" ||
-      !userInfo?.TronAddress ||
-      accountAddress !== userInfo?.TronAddress
-    ) {
-      alert("Wrong Tron address is Selected !");
-      setLoadingTrans(false);
+  //   if (
+  //     accountAddress === "" 
+  //     // !userInfo?.TronAddress
+  //     // accountAddress !== userInfo?.TronAddress
+  //   ) {
+  //     alert("Wrong  address is Selected !");
+  //     setLoadingTrans(false);
 
-      return;
-    }
+  //     return;
+  //   }
 
-    if (
-      accountAddress === "" ||
-      !userInfo?.TronAddress ||
-      accountAddress !== userInfo?.TronAddress
-    ) {
-      alert("Wrong TronLink Account is connected !");
-      setLoadingTrans(false);
+  //   if (
+  //     accountAddress === ""
+     
+  //   ) {
+  //     alert("Wrong  Account is connected !");
+  //     setLoadingTrans(false);
 
-      return;
-    }
-    if (lastTransaction.length > 0) {
-      alert("Your next exchange will be after 60 minutes..");
-      setLoadingTrans(false);
+  //     return;
+  //   }
+  //   if (lastTransaction.length > 0) {
+  //     alert("Your next exchange will be after 60 minutes..");
+  //     setLoadingTrans(false);
 
-      return;
-    }
-    if (parseInt(depositeAmount) + parseInt(maxWithdraw) > 500) {
-      alert("Withdrawal request will be made on Maximum 500 USD in one Day !");
-      setLoadingTrans(false);
+  //     return;
+  //   }
+  //   if (parseInt(depositeAmount) + parseInt(maxWithdraw) > 500) {
+  //     alert("Withdrawal request will be made on Maximum 500 USD in one Day !");
+  //     setLoadingTrans(false);
 
-      return;
-    }
+  //     return;
+  //   }
 
-    // verify_last_transaction
-    // verify_max_withdraw
-    if (accountAddress && accountAddress !== "") {
-      const ethers = window.tronWeb.utils.ethersUtils;
-      // let tronGrid = new TronGrid(window?.tronWeb);
-      let signingKey = new ethers.SigningKey("0x" + privateKey);
-      nonce = parseInt(nonce + Math.random() * 10);
-      let extra = Math.random() * 100 + 1; // Additional randomness
-      nonce = nonce + extra;
-      let message = (nonce + depositeAmount + new Date()).toString(); // Random unique message
-      let messageBytes = ethers.toUtf8Bytes(message);
-      let messageDigest = ethers.keccak256(messageBytes);
-      let signature = signingKey.signDigest(messageDigest);
-      // let addresscontract="TW6zd5dJfKaw3GKGLB2Kb8ss3PnWDnfx4r"
-      // let winnerLength = await window.troni.signatureAddress().call();
-      let value1 = ((depositeAmount / rate) * 0.95 * 10 ** 18).toString();
-      let actualValue = window.tronWeb.toBigNumber(value1);
-      let contract = await window?.tronWeb?.contract().at(CONTRACT_ADDRESS);
-      contract
-        .userTokenWithdraw(
-          actualValue.toString(10),
-          parseInt(nonce),
-          [messageDigest, signature.r, signature.s],
-          signature.v
-        )
-        .send()
-        .then(async (output) => {
-          //console.log("- Output:", output, "\n");
-          let ress = JSON.parse(user);
-          let uId = ress?.user_id;
-          try {
-            const res = await API.post(`/save_withdraw`, {
-              uid: uId,
-              txn: output.toString(),
-              amount: depositeAmount,
-              useraddress: accountAddress,
-              tokenamount: rate
-                ? (depositeAmount / rate) * 0.95
-                : depositeAmount,
-            });
-            setLoadingTrans(false);
+  //   // verify_last_transaction
+  //   // verify_max_withdraw
+  //   if (accountAddress && accountAddress !== "") {
+  //     const ethers = window.tronWeb.utils.ethersUtils;
+  //     // let tronGrid = new TronGrid(window?.tronWeb);
+  //     let signingKey = new ethers.SigningKey("0x" + privateKey);
+  //     nonce = parseInt(nonce + Math.random() * 10);
+  //     let extra = Math.random() * 100 + 1; // Additional randomness
+  //     nonce = nonce + extra;
+  //     let message = (nonce + depositeAmount + new Date()).toString(); // Random unique message
+  //     let messageBytes = ethers.toUtf8Bytes(message);
+  //     let messageDigest = ethers.keccak256(messageBytes);
+  //     let signature = signingKey.signDigest(messageDigest);
+  //     // let addresscontract="TW6zd5dJfKaw3GKGLB2Kb8ss3PnWDnfx4r"
+  //     // let winnerLength = await window.troni.signatureAddress().call();
+  //     let value1 = ((depositeAmount / rate) * 0.95 * 10 ** 18).toString();
+  //     let actualValue = window.tronWeb.toBigNumber(value1);
+  //     let contract = await window?.tronWeb?.contract().at(CONTRACT_ADDRESS);
+  //     contract
+  //       .userTokenWithdraw(
+  //         actualValue.toString(10),
+  //         parseInt(nonce),
+  //         [messageDigest, signature.r, signature.s],
+  //         signature.v
+  //       )
+  //       .send()
+  //       .then(async (output) => {
+  //         //console.log("- Output:", output, "\n");
+  //         let ress = JSON.parse(user);
+  //         let uId = ress?.user_id;
+  //         try {
+  //           const res = await API.post(`/save_withdraw`, {
+  //             uid: uId,
+  //             txn: output.toString(),
+  //             amount: depositeAmount,
+  //             useraddress: accountAddress,
+  //             tokenamount: rate
+  //               ? (depositeAmount / rate) * 0.95
+  //               : depositeAmount,
+  //           });
+  //           setLoadingTrans(false);
 
-            toast.success("Transaction is complete");
-          } catch (e) {
-            console.log("error", e);
-            setLoadingTrans(false);
+  //           toast.success("Transaction is complete");
+  //         } catch (e) {
+  //           console.log("error", e);
+  //           setLoadingTrans(false);
 
-            toast.error("Something went Wrong !");
-          }
-        })
-        .catch((e) => {
-          toast.error(e.message);
-          setLoadingTrans(false);
-        });
-      // console.log(getDate, numberOfTokens);
-    } else {
-      setLoadingTrans(false);
+  //           toast.error("Something went Wrong !");
+  //         }
+  //       })
+  //       .catch((e) => {
+  //         toast.error(e.message);
+  //         setLoadingTrans(false);
+  //       });
+  //     // console.log(getDate, numberOfTokens);
+  //   } else {
+  //     setLoadingTrans(false);
 
-      toast.error("TronLink is not connected");
-    }
-  };
+  //     toast.error("TronLink is not connected");
+  //   }
+  // };
   //console.log("userInfo", userInfo);
   return (
     <>
@@ -476,7 +475,7 @@ export const Widthdraw = () => {
                           />
                         </div>
                       </div>
-                      <div className="row mt-3 mb-3">
+                      {/* <div className="row mt-3 mb-3">
                         <div className="col-md-2">
                           <label>TRON Address</label>
                         </div>
@@ -491,7 +490,7 @@ export const Widthdraw = () => {
                             placeholder="Enter TRON Address"
                           />
                         </div>
-                      </div>
+                      </div> */}
                       <div className="row">
                         <div className="col-md-2">
                           <label>Wallet Net USD Value</label>
@@ -578,7 +577,7 @@ export const Widthdraw = () => {
                               className="btn btn-success"
                               style={{ marginTop: "10px" }}
                               id="btnother"
-                              onClick={() => DrawTicket()}
+                              // onClick={() => DrawTicket()}
                             >
                               Withdrawal
                             </button>
