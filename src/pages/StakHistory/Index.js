@@ -8,6 +8,7 @@ import { loadWeb3 } from "../../Api/Api";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { areArraysEqual } from "@mui/base";
+import Spinner_data from "./Spinner_data";
 
 function StakHistory() {
   const refReport = useSelector((state) => state?.dailyYield?.refReport);
@@ -17,7 +18,9 @@ function StakHistory() {
   const [filterValue, setFilterValue] = useState("");
   const [userInfo, setUserInfo] = useState(null);
   const [tokenid, setTokenId] = useState("");
-  const [spinner, setspinner] = useState(true);
+  let [spinner, setspinner] = useState(false);
+  let [LOading_Spinner, setLOading_Spinner] = useState(false);
+
 
 
   const WalletAddress = async () => {
@@ -65,7 +68,7 @@ function StakHistory() {
   const Unstake_NFT = async () => {
     const acc = await loadWeb3()
 
-    setspinner(true)
+    setLOading_Spinner(true)
 
     const user = localStorage.getItem("user");
     let ress = JSON.parse(user);
@@ -74,7 +77,7 @@ function StakHistory() {
     let user_Address
     let RowId
     try {
-      setspinner(true)
+      // setLOading_Spinner(true)
 
       const res = await axios.get(`https://yeepule-nft-api.herokuapp.com/get_user_info?id=${uId_user}`);
       // console.log("res", res);
@@ -86,14 +89,17 @@ function StakHistory() {
 
     } catch (e) {
       console.log("Fatch Api", e);
-      // setspinner(false)
+      // setLOading_Spinner(false)
 
     }
 
     // console.log("userInfo",user_Address);
 
     try {
-      setspinner(true)
+      setLOading_Spinner(true)
+    console.log("spinner",LOading_Spinner);
+
+
 
       let refReport_length = refReport.length
       let getTokId
@@ -118,10 +124,10 @@ function StakHistory() {
       let inComeData = ConditionalApiIncom.data.data
       console.log("ConditionalApi", ConditionalApiIncom.data.data);
       if (DayComp == 0 || inComeData == 0) {
-        setspinner(true)
+        setLOading_Spinner(true)
 
         if (user_Address == acc) {
-          setspinner(true)
+          setLOading_Spinner(true)
 
 
           // console.log("refReport",refReport.length);
@@ -160,7 +166,7 @@ function StakHistory() {
 
           } else {
             alert("you are not owner of this id")
-            setspinner(false)
+            setLOading_Spinner(false)
 
           }
 
@@ -169,13 +175,13 @@ function StakHistory() {
 
         } else {
           alert("Account Mismatch")
-          setspinner(false)
+          setLOading_Spinner(false)
 
         }
 
       } else {
         toast.error(`You can’t unstake till 250 days of your staking or 290% of your total earning whichever is earlier Remaning Days: ${DayComp}`)
-        setspinner(false)
+        setLOading_Spinner(false)
 
       }
 
@@ -185,7 +191,7 @@ function StakHistory() {
       console.log("Erroe While Call Staking Fuction", error);
       toast.error("Transaction Failed")
       alert("Transaction Failed")
-      setspinner(false)
+      setLOading_Spinner(false)
 
 
     }
@@ -206,25 +212,29 @@ function StakHistory() {
 
         date: moment(item?.edate).format("M/D/YYYY h:m:s A"),
         date2: moment(item?.top_update).format("M/D/YYYY h:m:s A"),
-        date2: (<><button className="btn btn-success" onClick={() => Unstake_NFT()}>
+        date2: <Spinner_data  LOading_Spinner={LOading_Spinner} Unstake_NFT={Unstake_NFT}  />
 
-          {
-            spinner ? (
-              <>
-               unstake
-              </>
-            ) :
-              (
-                <>
-                 <div class="spinner-border" role="status">
-                  <span class="visually-hidden">Loading...</span>
-                </div>
+          // (<>
 
-                </>
-              )
-          }
+          //   {
+          //     spinner ? (
+          //       <>
+          //         <div class="spinner-border" role="status">
+          //           <span class="visually-hidden">Loading...</span>
+          //         </div>
+          //       </>
+          //     ) :
+          //       (
+          //         <>
+          //           <button className="btn btn-success" onClick={() => Unstake_NFT()}>unstake</button>
 
-        </button></>)
+
+
+          //         </>
+          //       )
+          //   }
+
+          // </>)
 
       });
       // if (filterValue == "" || filterValue == "1") {
@@ -274,6 +284,8 @@ function StakHistory() {
   console.log("state", filterValue);
   return (
     <>
+
+    
       <div class="content-wrapper">
         <div class="grid grid-1">
           <div class="section-heading">
