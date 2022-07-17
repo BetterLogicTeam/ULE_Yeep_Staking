@@ -298,8 +298,8 @@ function NftStaking() {
           console.log("check_Nft_Balance", check_Nft_Balance);
 
           if (check_Nft_Balance == acc) {
-            let Check_staked_id = await ULE_Staking_ContractOf.methods.check(tokenid).call();
-            if (Check_staked_id == false) {
+            // let Check_staked_id = await ULE_Staking_ContractOf.methods.check(tokenid).call();
+            // if (Check_staked_id == false) {
               await Ule_100_ContractOf.methods.setApprovalForAll(ULE_NFT_Staking_100, true).send({
                 from: acc
               })
@@ -329,10 +329,10 @@ function NftStaking() {
               // alert("Transaction Confirmed")
               window.location.reload()
 
-            } else {
-              alert("NFT Id Already Staked. ")
+            // } else {
+            //   alert("NFT Id Already Staked. ")
 
-            }
+            // }
           } else {
             alert("You are not owner of this ID. ")
           }
