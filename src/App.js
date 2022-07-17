@@ -30,6 +30,16 @@ import BuyNft from "./pages/BuyNft";
 import NftStaking from "./pages/NftStacking/Index";
 import StakHistory from "./pages/StakHistory/Index";
 import UnStake_History from "./pages/UnStakHistory/UnStake_History";
+import Stacking_With_200 from "./pages/NftStacking/Stacking_With_200";
+import Stacking_With_300 from "./pages/NftStacking/Stacking_With_300";
+import Stacking_With_400 from "./pages/NftStacking/Stacking_With_400";
+import Stacking_With_500 from "./pages/NftStacking/Stacking_With_500";
+import Stacking_With_1000 from "./pages/NftStacking/Stacking_With_1000";
+import Stacking_With_2000 from "./pages/NftStacking/Stacking_With_2000";
+import Stacking_With_3000 from "./pages/NftStacking/Stacking_With_3000";
+import Stacking_With_4000 from "./pages/NftStacking/Stacking_With_4000";
+import Stacking_With_5000 from "./pages/NftStacking/Stacking_With_5000";
+import Stacking_With_10000 from "./pages/NftStacking/Stacking_With_10000";
 
 
 function App() {
@@ -66,6 +76,18 @@ function App() {
           <ProtectedRoute exact path="/buy-nft" component={BuyNft} />
           <ProtectedRoute exact path="/nft-staking" component={NftStaking} />
           <ProtectedRoute exact path="/stak-history" component={StakHistory} />
+          <ProtectedRoute exact path="/Stacking_With_200" component={Stacking_With_200} />
+          <ProtectedRoute exact path="/Stacking_With_300" component={Stacking_With_300} />
+          <ProtectedRoute exact path="/Stacking_With_400" component={Stacking_With_400} />
+          <ProtectedRoute exact path="/Stacking_With_500" component={Stacking_With_500} />
+          <ProtectedRoute exact path="/Stacking_With_1000" component={Stacking_With_1000} />
+          <ProtectedRoute exact path="/Stacking_With_2000" component={Stacking_With_2000} />
+          <ProtectedRoute exact path="/Stacking_With_3000" component={Stacking_With_3000} />
+          <ProtectedRoute exact path="/Stacking_With_4000" component={Stacking_With_4000} />
+          <ProtectedRoute exact path="/Stacking_With_5000" component={Stacking_With_5000} />
+          <ProtectedRoute exact path="/Stacking_With_10000" component={Stacking_With_10000} />
+
+
 
           <ProtectedRoute
             exact

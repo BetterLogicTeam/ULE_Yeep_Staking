@@ -10,6 +10,7 @@ import { type } from "@testing-library/user-event/dist/type";
 import { ULE_NFT_100, ULE_NFT_100_ABI, ULE_NFT_Staking_100, Ule_NFT_Staking_100_ABI } from "../Utils/Contract_Address";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 
 // import Activate from '../../pages/Activate/index';
@@ -300,34 +301,34 @@ function NftStaking() {
           if (check_Nft_Balance == acc) {
             // let Check_staked_id = await ULE_Staking_ContractOf.methods.check(tokenid).call();
             // if (Check_staked_id == false) {
-              await Ule_100_ContractOf.methods.setApprovalForAll(ULE_NFT_Staking_100, true).send({
-                from: acc
-              })
+            await Ule_100_ContractOf.methods.setApprovalForAll(ULE_NFT_Staking_100, true).send({
+              from: acc
+            })
 
-              toast.success("Successfully Approved")
+            toast.success("Successfully Approved")
 
-              let hash = await ULE_Staking_ContractOf.methods.Stake(tokenid).send({
-                from: acc,
-                // value: totalMintingPriceBNB.toString()
+            let hash = await ULE_Staking_ContractOf.methods.Stake(tokenid).send({
+              from: acc,
+              // value: totalMintingPriceBNB.toString()
 
-              })
+            })
 
-              console.log("hash", hash);
-              hash = hash.transactionHash
-              console.log("user_Address", ress);
+            console.log("hash", hash);
+            hash = hash.transactionHash
+            console.log("user_Address", ress);
 
-              let postapi = await axios.post('https://ule-nft-api.herokuapp.com/nftStaking', {
-                "uid": uId_user,
-                "address": acc,
-                "tokenid": tokenid,
-                "txn": hash
-              })
-              console.log("Api Resp", postapi);
+            let postapi = await axios.post('https://ule-nft-api.herokuapp.com/nftStaking', {
+              "uid": uId_user,
+              "address": acc,
+              "tokenid": tokenid,
+              "txn": hash
+            })
+            console.log("Api Resp", postapi);
 
 
-              toast.success("Transaction Confirmed")
-              // alert("Transaction Confirmed")
-              window.location.reload()
+            toast.success("Transaction Confirmed")
+            // alert("Transaction Confirmed")
+            window.location.reload()
 
             // } else {
             //   alert("NFT Id Already Staked. ")
@@ -389,7 +390,7 @@ function NftStaking() {
     <>
       <div class="col-md 9 stak">
         <div className="col-md-7 stack-md">
-          <h4 className="stack-h4">NFT Staking</h4>
+          <h4 className="stack-h4">NFT Staking 100</h4>
           {/* <h6 className="stack-h6">
             Available BNB Balance :
             <input
@@ -445,7 +446,7 @@ function NftStaking() {
           </h6>
           <form name="frm1" method="post">
             <h6 className="stack-h6 ipp">
-              <input
+              {/* <input
                 type="text"
                 className="stak-input"
                 name="User Id"
@@ -468,7 +469,134 @@ function NftStaking() {
                 placeholder="Enter Address"
                 style={{ display: "none" }}
                 required
-              />
+              /> */}
+
+              <div class="dropdown ms-2 mt-2 mb-4">
+                <button
+                  class="btn btn-secondary dropdown-toggle select_main btn_dropdownhere"
+                  type="button"
+                  id="dropdownMenuButton1"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Staking
+                </button>
+                <ul
+                  class="dropdown-menu btn_dropdownhere text-center h-auto fs-3"
+                  aria-labelledby="dropdownMenuButton1"
+                >
+
+                
+                  <li>
+                    <a class="dropdown-item">
+                      {" "}
+                      <Link to="Stacking_With_200" className="text-d">
+                        {" "}
+                        {/* <img src="bsc3.png" alt="" /> */}
+                        Staking With 200 USD
+                      </Link>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item">
+                      {" "}
+                      <Link to="Stacking_With_300" className="text-d">
+                        {" "}
+                        {/* <img src="bsc3.png" alt="" /> */}
+                        Staking With 300 USD
+                      </Link>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item">
+                      {" "}
+                      <Link to="Stacking_With_400" className="text-d">
+                        {" "}
+                        {/* <img src="bsc3.png" alt="" /> */}
+                        Staking With 400 USD
+                      </Link>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item">
+                      {" "}
+                      <Link to="Stacking_With_500" className="text-d">
+                        {" "}
+                        {/* <img src="bsc3.png" alt="" /> */}
+                        Staking With 500 USD
+                      </Link>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item">
+                      {" "}
+                      <Link to="Stacking_With_1000" className="text-d">
+                        {" "}
+                        {/* <img src="bsc3.png" alt="" /> */}
+                        Staking With 1000 USD
+                      </Link>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item">
+                      {" "}
+                      <Link to="Stacking_With_2000" className="text-d">
+                        {" "}
+                        {/* <img src="bsc3.png" alt="" /> */}
+                        Staking With 2000 USD
+                      </Link>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item">
+                      {" "}
+                      <Link to="Stacking_With_3000" className="text-d">
+                        {" "}
+                        {/* <img src="bsc3.png" alt="" /> */}
+                        Staking With 3000 USD
+                      </Link>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item">
+                      {" "}
+                      <Link to="Stacking_With_4000" className="text-d">
+                        {" "}
+                        {/* <img src="bsc3.png" alt="" /> */}
+                        Staking With 4000 USD
+                      </Link>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item">
+                      {" "}
+                      <Link to="Stacking_With_5000" className="text-d">
+                        {" "}
+                        {/* <img src="bsc3.png" alt="" /> */}
+                        Staking With 5000 USD
+                      </Link>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item">
+                      {" "}
+                      <Link to="Stacking_With_10000" className="text-d">
+                        {" "}
+                        {/* <img src="bsc3.png" alt="" /> */}
+                        Staking With 10000 USD
+                      </Link>
+                    </a>
+                  </li>
+                  {/* <li>
+                      <a class="dropdown-item">
+                        <Link to="/Main_polygon" className="text-d">
+                          {" "}
+                          <img src="polygon.png" alt="" /> Polygon
+                        </Link>
+                      </a>
+                    </li> */}
+                </ul>
+              </div>
               <input
                 type="text"
                 className="stak-input"
@@ -480,7 +608,9 @@ function NftStaking() {
                 placeholder="Enter Token id"
                 required
               />
-              <input
+
+
+              {/* <input
                 type="text"
                 className="stak-input"
                 name="fname"
@@ -491,7 +621,7 @@ function NftStaking() {
                 placeholder="Enter Txn id"
                 style={{ display: "none" }}
                 required
-              />
+              /> */}
               {/* <span className="stak-span">Token ID</span> */}
             </h6>
             <button className="btn btn-stak" onClick={() => ULE_Stake()} type="button">

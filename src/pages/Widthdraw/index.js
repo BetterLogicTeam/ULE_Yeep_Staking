@@ -380,7 +380,7 @@ export const Widthdraw = () => {
                               </div>
                             </div>
                             <br />
-                            <div className="row">
+                            {/* <div className="row">
                               <div className="col-md-2">
                                 <label>TRON Address</label>
                               </div>
@@ -395,7 +395,7 @@ export const Widthdraw = () => {
                                   placeholder="Enter TRON Address"
                                 />
                               </div>
-                            </div>
+                            </div> */}
                             <div className="row pt-4">
                               <div className="col-md-3 col-md-offset-2">
                                 <div className="submit_bnt">
@@ -435,7 +435,7 @@ export const Widthdraw = () => {
                                       )
                                     : ""} `}
                                 </b>
-                                Account to add Tron address{" "}
+                                {/* Account to add Tron address{" "} */}
                               </label>
                             </div>
                           </div>

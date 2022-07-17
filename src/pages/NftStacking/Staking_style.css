@@ -1,0 +1,18 @@
+.btn_dropdownhere{
+    width: 50% !important;
+}
+.show {
+    display:inline !important ;
+}
+.dropdown-menu li a{
+    color: white !important;
+}
+
+.dropdown-menu{
+    background-color: #fbc50b;
+    min-width: 20rem !important;
+
+}
+.dropdown-menu li a:hover{
+    background: #a59cae !important;
+}
