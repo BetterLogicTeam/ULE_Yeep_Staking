@@ -402,7 +402,7 @@ function NftStaking() {
             />
           </h6> */}
 
-          <h6 className="stack-h6">
+          {/* <h6 className="stack-h6">
             Available BNB Balance :
             <span
               id="tokenbalance"
@@ -414,9 +414,9 @@ function NftStaking() {
             >
               {blnce}  BNB
             </span>
-          </h6>
+          </h6> */}
           {/* <Activate /> */}
-          <h6 className="stack-h6">
+          {/* <h6 className="stack-h6">
             Live Rate :
             <input
               type="text"
@@ -426,8 +426,8 @@ function NftStaking() {
               placeholder={`1 ULE /  ${rate} USD`}
               readonly=""
             />
-            {/* </button> */}
-          </h6>
+          
+          </h6> */}
 
 
           <hr className="stak-hr" />
