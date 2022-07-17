@@ -26,6 +26,7 @@ import {
   getDownlineBusiness,
 } from "../../store/actions/dashboard";
 import { API } from "../../store/actions/API";
+import axios from "axios";
 const Dashboard = () => {
   const dashboard = useSelector((state) => state?.dashboard);
   const user = localStorage.getItem("user");
@@ -51,6 +52,12 @@ const Dashboard = () => {
   }, []);
 
   const [betaWallet, setBetaWallet] = useState(null);
+  const [EarnAmount, setEarnAmount] = useState(0);
+  const [TotalAmount, setTotalAmount] = useState(0);
+  const [MaxIncome, setMaxIncome] = useState(0);
+
+
+
 
   const getBetaWallet = async () => {
     let ress = JSON.parse(user);
@@ -63,6 +70,26 @@ const Dashboard = () => {
     }
   };
 
+
+  const Live_Rate_Api=async() =>{
+    try{
+      let resAPI= await axios.get('https://yeepule-nft-api.herokuapp.com/get_betawallet?id=159111')
+      console.log("RESAPI_here",resAPI.data.data[0]);
+      setEarnAmount(resAPI.data.data[0].EarnAmount)
+      setTotalAmount(resAPI.data.data[0].tt)
+      setMaxIncome(resAPI.data.data[0].MaxIncome)
+
+    }catch(e){
+      console.log("Live Rate Api",e);
+    }
+  }
+
+
+  useEffect(() => {
+    Live_Rate_Api()
+    
+  }, [])
+  
   console.log("state", betaWallet);
   return (
     <div class="content-wrapper">
@@ -607,8 +634,8 @@ const Dashboard = () => {
               </div>
             </div>
             <div className="mb-5" style={{ color: "#000", fontWeight: "400" }}>
-             
-            Your total earning is 300.0000 USD out of 300.0000 USD (Your earned 100.0000% out of 300% of your investment )
+            Your total earning is {EarnAmount} USD out of {TotalAmount} USD (Your earned {MaxIncome}% out of 300% of your investment )
+            {/* Your total earning is {EarnAmount} USD out of {TotalAmount} USD (Your earned 100.0000% out of 300% of your investment ) */}
             </div>
             {/* 
                     <style>
