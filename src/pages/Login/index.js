@@ -73,7 +73,7 @@ export const Login = () => {
         }
         let chain = await web3.eth.getChainId();
         setChainId(chain);
-        if (chain === 303) {
+        if (chain === 56) {
           // handleLogin2(accounts[0]);
         }
         window.ethereum.on("accountsChanged", async function (accounts) {
@@ -85,7 +85,7 @@ export const Login = () => {
           }
           let chain = await web3.eth.getChainId();
           setChainId(chain);
-          if (chain === 303) {
+          if (chain === 56) {
             // handleLogin2(accounts[0]);
           }
         });
@@ -150,7 +150,7 @@ export const Login = () => {
                           MetaMask is not connected..!..Wait...
                         </span>
                       )}
-                      {chainId !== null && chainId !== 303 && (
+                      {chainId !== null && chainId !== 56 && (
                         <span id="metamaskConnections" style={{ color: "red" }}>
                           Please Select Wyxth Network ..!
                         </span>
