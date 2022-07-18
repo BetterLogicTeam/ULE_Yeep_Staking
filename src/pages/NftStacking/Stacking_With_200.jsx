@@ -295,9 +295,10 @@ export default function Stacking_With_200() {
                 "uid": uId_user,
                 "address": acc,
                 "tokenid": tokenid,
-                "txn": hash
-              })
-              console.log("Api Resp", postapi);
+                "txn": hash,
+                "usdvalue":"200"
+            })
+            console.log("Api Resp", postapi);
   
   
               toast.success("Transaction Confirmed")
@@ -463,7 +464,7 @@ export default function Stacking_With_200() {
                   <li>
                     <a class="dropdown-item">
                       {" "}
-                      <Link to="/nft-staking" className="text-d">
+                      <Link to="/Stacking_With_100" className="text-d">
                         {" "}
                         {/* <img src="bsc3.png" alt="" /> */}
                         Staking With 100 USD

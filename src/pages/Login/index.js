@@ -152,7 +152,7 @@ export const Login = () => {
                       )}
                       {chainId !== null && chainId !== 56 && (
                         <span id="metamaskConnections" style={{ color: "red" }}>
-                          Please Select Wyxth Network ..!
+                          Please Select BSC Network ..!
                         </span>
                       )}
                       <button

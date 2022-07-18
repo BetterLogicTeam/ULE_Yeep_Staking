@@ -1,4 +1,3 @@
-
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
@@ -6,9 +5,9 @@ import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { loadWeb3 } from '../../Api/Api';
 import { API } from '../../store/actions/API';
-import { ULE_NFT_100, ULE_NFT_100_ABI, ULE_NFT_5000, ULE_NFT_5000_ABI, ULE_NFT_Staking_100, Ule_NFT_Staking_100_ABI, ULE_NFT_Staking_5000, Ule_NFT_Staking_5000_ABI } from '../Utils/Contract_Address';
+import { ULE_NFT_100, ULE_NFT_100_ABI, ULE_NFT_200, ULE_NFT_200_ABI, ULE_NFT_Staking_100, Ule_NFT_Staking_100_ABI, ULE_NFT_Staking_200, Ule_NFT_Staking_200_ABI } from '../Utils/Contract_Address';
 
-export default function Stacking_With_5000() {
+export default function Stacking_With_100() {
     const [uid, setUId] = useState("101010");
     const [address, setAddress] = useState("12356");
     const [tokenid, setTokenId] = useState("");
@@ -268,15 +267,15 @@ export default function Stacking_With_5000() {
             alert("Please Enter Token Id")
           } else {
             const web3 = await window.web3;
-            let Ule_100_ContractOf = new web3.eth.Contract(ULE_NFT_5000_ABI, ULE_NFT_5000);
-            let ULE_Staking_ContractOf = new web3.eth.Contract(Ule_NFT_Staking_5000_ABI, ULE_NFT_Staking_5000);
+            let Ule_100_ContractOf = new web3.eth.Contract(ULE_NFT_100_ABI, ULE_NFT_100);
+            let ULE_Staking_ContractOf = new web3.eth.Contract(Ule_NFT_Staking_100_ABI, ULE_NFT_Staking_100);
             let check_Nft_Balance = await Ule_100_ContractOf.methods.ownerOf(tokenid).call();
             console.log("check_Nft_Balance", check_Nft_Balance);
   
             if (check_Nft_Balance == acc) {
               // let Check_staked_id = await ULE_Staking_ContractOf.methods.check(tokenid).call();
               // if (Check_staked_id == false) {
-              await Ule_100_ContractOf.methods.setApprovalForAll(ULE_NFT_Staking_5000, true).send({
+              await Ule_100_ContractOf.methods.setApprovalForAll(ULE_NFT_Staking_100, true).send({
                 from: acc
               })
   
@@ -297,7 +296,7 @@ export default function Stacking_With_5000() {
                 "address": acc,
                 "tokenid": tokenid,
                 "txn": hash,
-                "usdvalue":"5000"
+                "usdvalue":"100"
             })
             console.log("Api Resp", postapi);
   
@@ -366,7 +365,7 @@ export default function Stacking_With_5000() {
     <>
      <div class="col-md 9 stak">
         <div className="col-md-7 stack-md">
-          <h4 className="stack-h4">NFT Staking 5000  </h4>
+          <h4 className="stack-h4">NFT Staking 100  </h4>
           {/* <h6 className="stack-h6">
             Available BNB Balance :
             <input
@@ -447,7 +446,7 @@ export default function Stacking_With_5000() {
                 required
               /> */}
 
-<div class="dropdown ms-2 mt-2 mb-4">
+              <div class="dropdown ms-2 mt-2 mb-4">
                 <button
                   class="btn btn-secondary dropdown-toggle select_main btn_dropdownhere"
                   type="button"
@@ -465,7 +464,7 @@ export default function Stacking_With_5000() {
                   <li>
                     <a class="dropdown-item">
                       {" "}
-                      <Link to="/Stacking_With_100" className="text-d">
+                      <Link to="/nft-staking" className="text-d">
                         {" "}
                         {/* <img src="bsc3.png" alt="" /> */}
                         Staking With 100 USD

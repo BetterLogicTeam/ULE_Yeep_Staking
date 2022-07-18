@@ -40,6 +40,7 @@ import Stacking_With_3000 from "./pages/NftStacking/Stacking_With_3000";
 import Stacking_With_4000 from "./pages/NftStacking/Stacking_With_4000";
 import Stacking_With_5000 from "./pages/NftStacking/Stacking_With_5000";
 import Stacking_With_10000 from "./pages/NftStacking/Stacking_With_10000";
+import Stacking_With_100 from "./pages/NftStacking/Stacking_With_100";
 
 
 function App() {
@@ -76,6 +77,8 @@ function App() {
           <ProtectedRoute exact path="/buy-nft" component={BuyNft} />
           <ProtectedRoute exact path="/nft-staking" component={NftStaking} />
           <ProtectedRoute exact path="/stak-history" component={StakHistory} />
+          <ProtectedRoute exact path="/Stacking_With_100" component={Stacking_With_100} />
+
           <ProtectedRoute exact path="/Stacking_With_200" component={Stacking_With_200} />
           <ProtectedRoute exact path="/Stacking_With_300" component={Stacking_With_300} />
           <ProtectedRoute exact path="/Stacking_With_400" component={Stacking_With_400} />

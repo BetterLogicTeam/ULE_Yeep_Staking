@@ -293,12 +293,13 @@ export default function Stacking_With_400() {
               console.log("user_Address", ress);
   
               let postapi = await axios.post('https://ule-nft-api.herokuapp.com/nftStaking', {
-                "uid": uId_user,
-                "address": acc,
-                "tokenid": tokenid,
-                "txn": hash
-              })
-              console.log("Api Resp", postapi);
+                            "uid": uId_user,
+                            "address": acc,
+                            "tokenid": tokenid,
+                            "txn": hash,
+                            "usdvalue":"400"
+                        })
+                        console.log("Api Resp", postapi);
   
   
               toast.success("Transaction Confirmed")
@@ -464,7 +465,7 @@ export default function Stacking_With_400() {
                   <li>
                     <a class="dropdown-item">
                       {" "}
-                      <Link to="/nft-staking" className="text-d">
+                      <Link to="/Stacking_With_100" className="text-d">
                         {" "}
                         {/* <img src="bsc3.png" alt="" /> */}
                         Staking With 100 USD

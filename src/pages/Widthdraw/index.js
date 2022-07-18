@@ -217,6 +217,8 @@ export const Widthdraw = () => {
     }
   };
 
+
+  
   // const DrawTicket = async () => {
   //   setLoadingTrans(true);
   //   let maxWithdraw = await getMaxWithdraw();
@@ -349,7 +351,7 @@ export const Widthdraw = () => {
       ) : (
         <>
           <ToastContainer />
-          {!userInfo?.TronAddress ? (
+          {/* {!userInfo?.TronAddress ? (
             <div className="" ng-controller="myProfileAngularCtrl">
               <div className="content-wrapper">
                 <div className="grid grid-1">
@@ -358,7 +360,7 @@ export const Widthdraw = () => {
                       <h2>Enter Withdrawal Address</h2>
                     </div>
                     <div className="box box-default">
-                      {userInfo?.EthAddress == account ? (
+                      {userInfo?.EthAddress == userInfo?.EthAddress ? (
                         <>
                           <div className="panel-body">
                             <br />
@@ -379,7 +381,7 @@ export const Widthdraw = () => {
                               </div>
                             </div>
                             <br />
-                            {/* <div className="row">
+                            <div className="row">
                               <div className="col-md-2">
                                 <label>TRON Address</label>
                               </div>
@@ -394,12 +396,12 @@ export const Widthdraw = () => {
                                   placeholder="Enter TRON Address"
                                 />
                               </div>
-                            </div> */}
+                            </div>
                             <div className="row pt-4">
                               <div className="col-md-3 col-md-offset-2">
                                 <div className="submit_bnt">
                                   <button
-                                    onClick={addTronWalletAddress}
+                                    // onClick={addTronWalletAddress}
                                     id="btnsub2"
                                     className="btn"
                                   >
@@ -414,7 +416,7 @@ export const Widthdraw = () => {
                         <div className="panel-body">
                           <div className="row">
                             <div className="col-md-2">
-                              <label style={{color:'red'}}>Wrong Address</label>
+                              <label style={{ color: 'red' }}>Wrong Address</label>
                             </div>
                           </div>
                           <div className="row ">
@@ -422,19 +424,19 @@ export const Widthdraw = () => {
                               <label>
                                 Plaese connect Metamask with{" "}
                                 <b>
-                                {`${userInfo?.EthAddress
+                                  {`${userInfo?.EthAddress
                                     ? userInfo?.EthAddress.substr(
-                                        0,
-                                        6
-                                      )
+                                      0,
+                                      6
+                                    )
                                     : ""} ... ${userInfo?.EthAddress
-                                    ? userInfo?.EthAddress.substr(
+                                      ? userInfo?.EthAddress.substr(
                                         userInfo?.EthAddress.length - 6,
                                         userInfo?.EthAddress.length
                                       )
-                                    : ""} `}
+                                      : ""} `}
                                 </b>
-                                {/* Account to add Tron address{" "} */}
+                                Account to add Tron address{" "}
                               </label>
                             </div>
                           </div>
@@ -445,151 +447,152 @@ export const Widthdraw = () => {
                 </div>
               </div>
             </div>
-          ) : (
-            <div className="content-wrapper">
-              <div className="grid grid-1">
-                <div className="">
-                  <div className="section-heading">
-                    <h2>Withdrawal</h2>
-                  </div>
+          ) : ( */}
+          <div className="content-wrapper">
+            <div className="grid grid-1">
+              <div className="">
+                <div className="section-heading">
+                  <h2>Withdrawal</h2>
+                 
+                </div>
 
-                  <div className="box box-default table-wrapper ">
-                    <div className="panel-body">
-                      {/* <span className="metamaskConnection" style={{color:"red"}}>Metamask is not connected..!..Wait...</span> */}
-                      <br />
-                      <br />
-                      <br />
-                      <div className="row">
-                        <div className="col-md-2">
-                          <label>Metamask Address</label>
-                        </div>
-                        <div className="col-md-3">
-                          <input
-                            type="text"
-                            id="EthAddress"
-                            name="EthAddress"
-                            className="form-control mb-20"
-                            value={userInfo?.EthAddress}
-                            disabled={true}
-                            placeholder="Enter ETH Address"
-                          />
-                        </div>
+                <div className="box box-default table-wrapper ">
+                  <div className="panel-body">
+                    {/* <span className="metamaskConnection" style={{color:"red"}}>Metamask is not connected..!..Wait...</span> */}
+                    <br />
+                    <br />
+                    <br />
+                    <div className="row">
+                      <div className="col-md-2">
+                        <label>Metamask Address</label>
                       </div>
-                      {/* <div className="row mt-3 mb-3">
-                        <div className="col-md-2">
-                          <label>TRON Address</label>
-                        </div>
-                        <div className="col-md-3">
-                          <input
-                            type="text"
-                            id="TronAddress"
-                            name="TronAddress"
-                            value={userInfo?.TronAddress}
-                            disabled={true}
-                            className="form-control mb-20"
-                            placeholder="Enter TRON Address"
-                          />
-                        </div>
-                      </div> */}
-                      <div className="row">
-                        <div className="col-md-2">
-                          <label>Wallet Net USD Value</label>
-                        </div>
-                        <div className="col-md-3">
-                          <label className="form-control d-flex align-items-center">
-                            {trxtBalance}
-                          </label>
-                        </div>
+                      <div className="col-md-3">
+                        <input
+                          type="text"
+                          id="EthAddress"
+                          name="EthAddress"
+                          className="form-control mb-20"
+                          value={userInfo?.EthAddress}
+                          disabled={true}
+                          placeholder="Enter ETH Address"
+                        />
                       </div>
-
-                      <br />
-
-                      <div className="row">
-                        <div className="col-md-2">
-                          <label>Enter USD Amount </label>
-                        </div>
-                        <div className="col-md-3">
-                          <input
-                            type="text"
-                            className="form-control mb-20 ng-pristine ng-untouched ng-valid ng-empty ng-valid-maxlength"
-                            id="amount"
-                            placeholder="Enter USD Amount"
-                            value={depositeAmount}
-                            onChange={(e) => setDepositeAmount(e.target.value)}
-                            maxLength={10}
-                          />
-                        </div>
+                    </div>
+                    {/* <div className="row mt-3 mb-3">
+                      <div className="col-md-2">
+                        <label>TRON Address</label>
                       </div>
-
-                      <div className="row mrset mt-5" id="withdrwaltokendiv">
-                        <div className="col-md-2">
-                          <label>Withdrawal Token </label>
-                        </div>
-                        <div className="col-md-3">
-                          <input
-                            type="text"
-                            className="form-control ng-pristine ng-untouched ng-valid ng-empty"
-                            value={rate ? (depositeAmount / rate) * 0.95 : 0}
-                            placeholder="Withdrwal Token "
-                            disabled={true}
-                          />
-                        </div>
+                      <div className="col-md-3">
+                        <input
+                          type="text"
+                          id="TronAddress"
+                          name="TronAddress"
+                          value={userInfo?.TronAddress}
+                          disabled={true}
+                          className="form-control mb-20"
+                          placeholder="Enter TRON Address"
+                        />
                       </div>
+                    </div> */}
+                    <div className="row mt-5">
+                      <div className="col-md-2">
+                        <label>Wallet Net USD Value</label>
+                      </div>
+                      <div className="col-md-3">
+                        <label className="form-control d-flex align-items-center">
+                          {trxtBalance}
+                        </label>
+                      </div>
+                    </div>
 
-                      <input
-                        type="hidden"
-                        id="address"
-                        className="form-control ng-pristine ng-untouched ng-valid ng-empty"
-                        value=""
-                        autoComplete="off"
-                      />
-                      <input
-                        type="hidden"
-                        id="userid"
-                        className="form-control ng-pristine ng-untouched ng-valid ng-empty"
-                        value=""
-                        autoComplete="off"
-                      />
-                      <input
-                        type="hidden"
-                        id="withdrawalvalidate"
-                        className="form-control ng-pristine ng-untouched ng-valid ng-empty"
-                        value=""
-                        autoComplete="off"
-                      />
+                    <br />
 
-                      <div className="row">
-                        <div className="col-md-3 col-md-offset-2">
-                          {isLoadingTrans ? (
-                            <button
-                              className="btn btn-success"
-                              style={{ marginTop: "10px" }}
-                              id="btnother"
-                            >
-                              <div
-                                className="loaders"
-                                style={{ height: "30px", width: "30px" }}
-                              ></div>
-                              Transaction is in progress
-                            </button>
-                          ) : (
-                            <button
-                              className="btn btn-success"
-                              style={{ marginTop: "10px" }}
-                              id="btnother"
-                              // onClick={() => DrawTicket()}
-                            >
-                              Withdrawal
-                            </button>
-                          )}
-                        </div>
+                    <div className="row">
+                      <div className="col-md-2">
+                        <label>Enter USD Amount </label>
+                      </div>
+                      <div className="col-md-3">
+                        <input
+                          type="text"
+                          className="form-control mb-20 ng-pristine ng-untouched ng-valid ng-empty ng-valid-maxlength"
+                          id="amount"
+                          placeholder="Enter USD Amount"
+                          value={depositeAmount}
+                          // onChange={(e) => setDepositeAmount(e.target.value)}
+                          maxLength={10}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="row mrset mt-5" id="withdrwaltokendiv">
+                      <div className="col-md-2">
+                        <label>Withdrawal Token </label>
+                      </div>
+                      <div className="col-md-3">
+                        <input
+                          type="text"
+                          className="form-control ng-pristine ng-untouched ng-valid ng-empty"
+                          value={rate ? (depositeAmount / rate) * 0.95 : 0}
+                          placeholder="Withdrwal Token "
+                          disabled={true}
+                        />
+                      </div>
+                    </div>
+
+                    <input
+                      type="hidden"
+                      id="address"
+                      className="form-control ng-pristine ng-untouched ng-valid ng-empty"
+                      value=""
+                      autoComplete="off"
+                    />
+                    <input
+                      type="hidden"
+                      id="userid"
+                      className="form-control ng-pristine ng-untouched ng-valid ng-empty"
+                      value=""
+                      autoComplete="off"
+                    />
+                    <input
+                      type="hidden"
+                      id="withdrawalvalidate"
+                      className="form-control ng-pristine ng-untouched ng-valid ng-empty"
+                      value=""
+                      autoComplete="off"
+                    />
+
+                    <div className="row">
+                      <div className="col-md-3 col-md-offset-2">
+                        {isLoadingTrans ? (
+                          <button
+                            className="btn btn-success"
+                            style={{ marginTop: "10px" }}
+                            id="btnother"
+                          >
+                            <div
+                              className="loaders"
+                              style={{ height: "30px", width: "30px" }}
+                            ></div>
+                            Transaction is in progress
+                          </button>
+                        ) : (
+                          <button
+                            className="btn btn-success"
+                            style={{ marginTop: "10px" }}
+                            id="btnother"
+                            // onClick={() => withDrawToken()}
+                          >
+                            Withdrawal
+                          </button>
+                        )}
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          )}
+          </div>
+          {/* )}  */}
           <div className="clearfix">
             <br />
           </div>

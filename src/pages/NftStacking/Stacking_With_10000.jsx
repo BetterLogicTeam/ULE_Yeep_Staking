@@ -297,7 +297,8 @@ export default function Stacking_With_10000() {
                             "uid": uId_user,
                             "address": acc,
                             "tokenid": tokenid,
-                            "txn": hash
+                            "txn": hash,
+                            "usdvalue":"10000"
                         })
                         console.log("Api Resp", postapi);
 
@@ -465,7 +466,7 @@ export default function Stacking_With_10000() {
                                     <li>
                                         <a class="dropdown-item text-white">
                                             {" "}
-                                            <Link to="/nft-staking" className="text-d">
+                                            <Link to="/Stacking_With_100" className="text-d">
                                                 {" "}
                                                 {/* <img src="bsc3.png" alt="" /> */}
                                                 Staking With 100 USD

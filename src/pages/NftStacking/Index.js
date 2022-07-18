@@ -390,7 +390,7 @@ function NftStaking() {
     <>
       <div class="col-md 9 stak">
         <div className="col-md-7 stack-md">
-          <h4 className="stack-h4">NFT Staking 100</h4>
+          <h4 className="stack-h4">NFT Staking </h4>
           {/* <h6 className="stack-h6">
             Available BNB Balance :
             <input
@@ -485,7 +485,16 @@ function NftStaking() {
                   class="dropdown-menu btn_dropdownhere text-center h-auto fs-3"
                   aria-labelledby="dropdownMenuButton1"
                 >
-
+ <li>
+                    <a class="dropdown-item">
+                      {" "}
+                      <Link to="Stacking_With_100" className="text-d">
+                        {" "}
+                        {/* <img src="bsc3.png" alt="" /> */}
+                        Staking With 100 USD
+                      </Link>
+                    </a>
+                  </li>
                 
                   <li>
                     <a class="dropdown-item">
@@ -597,7 +606,7 @@ function NftStaking() {
                     </li> */}
                 </ul>
               </div>
-              <input
+              {/* <input
                 type="text"
                 className="stak-input"
                 name="fname"
@@ -607,7 +616,7 @@ function NftStaking() {
                 }}
                 placeholder="Enter Token id"
                 required
-              />
+              /> */}
 
 
               {/* <input
@@ -624,10 +633,10 @@ function NftStaking() {
               /> */}
               {/* <span className="stak-span">Token ID</span> */}
             </h6>
-            <button className="btn btn-stak" onClick={() => ULE_Stake()} type="button">
+            {/* <button className="btn btn-stak" onClick={() => ULE_Stake()} type="button">
               <img className="stack-sr" src="assets/images/Icon/112.png" />
               Staking
-            </button>
+            </button> */}
           </form>
         </div>
       </div>
