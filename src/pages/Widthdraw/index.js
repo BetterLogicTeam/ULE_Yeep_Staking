@@ -10,6 +10,7 @@ import axios from "axios";
 import TronWeb from "tronweb";
 import Web3 from "web3";
 import { Withdraw_Abi, Withdrwa_Address } from "../Activate/constants";
+import { ethers } from "ethers";
 // ye wala he
 
 export const Widthdraw = () => {
@@ -27,9 +28,7 @@ export const Widthdraw = () => {
   const [isLoadingTrans, setLoadingTrans] = useState(false);
 
   window.troni = {};
-  let CONTRACT_ADDRESS = "TJky76sBRMvV8ybkL7mb1XionbM8PdGtcw";
-  let privateKey = "";
-  var nonce = 2; // some random number
+
 
 
   const [account, setAccount] = useState(null);
@@ -172,194 +171,50 @@ export const Widthdraw = () => {
   }, []);
  
 
-  async function Withdraw_toke() {
-    let privateKey = '52a53be6ac8a4c761b4b9a9bde5d90b8dd3b64a196ee1f7419b1b8f8d363cac1';
-    var address = "0x4113ccD05D440f9580d55B2B34C92d6cC82eAB3c"
-    var nonce = 2; // some random number
-    const web3 = await window.web3;
-    let amount = depositeAmount
-    let AmountBNB = web3.utils.toWei(amount);
-    // console.log("window :", window.web3.utils);
-    const ethers = ethers.utils;
-    console.log("window :", ethers);
-    let contract = new web3.eth.Contract(Withdraw_Abi,Withdrwa_Address);
-    let signingKey = new ethers.SigningKey('0x' + privateKey);
-    nonce = parseInt(nonce + Math.random() * 10);
-    let extra = Math.random() * 100 + 1; // Additional randomness
-    nonce = nonce + extra;
-    let message = (nonce + AmountBNB + new Date()).toString(); // Random unique message
-    let messageBytes = ethers.toUtf8Bytes(message);
-    let messageDigest = ethers.keccak256(messageBytes);
-    let signature = signingKey.signDigest(messageDigest);
 
-    contract.methods.userBNBWithdraw(AmountBNB, parseInt(nonce), [messageDigest, signature.r, signature.s], signature.v).send({ from: userInfo?.EthAddress }).then((output) => {
-      console.log("- Output:", output, "\n");
-      // jQuery("#withDrawId").text(output);
+
+ const Withdraw_toke=async()=>{
+  let CONTRACT_ADDRESS = "TJky76sBRMvV8ybkL7mb1XionbM8PdGtcw";
+  let privateKey = "eff29765d34cc1c58bd3dbfa8d72c6d389f4d2e44221ea5bde9e3b81fd44d533";
+  var nonce = 2; // some random number
+  const web3= window.web3;
+  setLoadingTrans(true)
+  try{
+    // let amount = jQuery("#withDrawTokenid").val()
+    // let AmountBNB = web3.utils.toWei(depositeAmount);
+    let AmountBNB = depositeAmount;
+
+    console.log("ethers",window.ethers.utils);
+    const ethers = window.ethers.utils;
+  
+    let contract=new web3.eth.Contract(Withdraw_Abi,Withdrwa_Address);
+    let signingKey = new ethers.SigningKey('0x'+privateKey);
+    console.log("TAyyab");
+    let extra = Math.random() * 100 +1; // Additional randomness
+  nonce = parseInt(nonce+Math.random() * 10); 
+  nonce = nonce + extra;
+  let message = (nonce + AmountBNB + new Date()).toString(); // Random unique message
+  let messageBytes = ethers.toUtf8Bytes(message);
+  let messageDigest = ethers.keccak256(messageBytes);
+  let signature = signingKey.signDigest(messageDigest);
+   contract.methods.userTokenWithdraw(AmountBNB, parseInt(nonce), [messageDigest, signature.r, signature.s], signature.v).send({from:userInfo?.EthAddress}).then((output) => {
+        console.log("- Output:", output, "\n");
+        // jQuery("#withDrawTokenhash").text(output);
     });;
+    setLoadingTrans(false)
+
+
+
+  }catch(e){
+    setLoadingTrans(false)
+    console.log("Erroe while call Withdraw Fuction",e);
+
   }
-
-
-
-//  const Withdraw_toke=async()=>{
-//   const web3= window.web3;
-//   try{
-//     setLoadingTrans(true)
-//     // let amount = jQuery("#withDrawTokenid").val()
-//     // let AmountBNB = web3.utils.toWei(depositeAmount);
-//     let AmountBNB = depositeAmount;
-
-//     const ethers = ethers.utils;
-//     console.log("ethers");
-  
-//     let contract=new web3.eth.Contract(Withdraw_Abi,Withdrwa_Address);
-//   let signingKey = new ethers.SigningKey('0x'+privateKey);
-//   nonce = parseInt(nonce+Math.random() * 10); 
-//   let extra = Math.random() * 100 +1; // Additional randomness
-//   nonce = nonce + extra;
-//   let message = (nonce + AmountBNB + new Date()).toString(); // Random unique message
-//   let messageBytes = ethers.toUtf8Bytes(message);
-//   let messageDigest = ethers.keccak256(messageBytes);
-//   let signature = signingKey.signDigest(messageDigest);
-//    contract.methods.userTokenWithdraw(AmountBNB, parseInt(nonce), [messageDigest, signature.r, signature.s], signature.v).send({from:userInfo?.EthAddress}).then((output) => {
-//         console.log("- Output:", output, "\n");
-//         // jQuery("#withDrawTokenhash").text(output);
-//     });;
-
-
-
-//   }catch(e){
-//     console.log("Erroe while call Withdraw Fuction",e);
-//     setLoadingTrans(false)
-
-//   }
-//  }
+ }
 
 
 
   
-  // const DrawTicket = async () => {
-  //   setLoadingTrans(true);
-  //   let maxWithdraw = await getMaxWithdraw();
-  //   let lastTransaction = await getLastTransaction();
-
-  //   if (depositeAmount > trxtBalance) {
-  //     alert("Insufficiant Wallet Balance !");
-  //     setLoadingTrans(false);
-  //     return;
-  //   }
-  //   if (depositeAmount < 10) {
-  //     alert("Withdraw Request can be made on Minimum 10 USD !");
-  //     setLoadingTrans(false);
-  //     return;
-  //   }
-  //   if (depositeAmount > 500) {
-  //     alert("Withdraw Request can be made on Maximum 500 USD !");
-  //     setLoadingTrans(false);
-
-  //     return;
-  //   }
-  //   // if (accountAddress === "") {
-  //   //   alert("TronLink is not connected !");
-  //   //   setLoadingTrans(false);
-
-  //   //   return;
-  //   // }
-
-  //   if (
-  //     accountAddress === "" 
-  //     // !userInfo?.TronAddress
-  //     // accountAddress !== userInfo?.TronAddress
-  //   ) {
-  //     alert("Wrong  address is Selected !");
-  //     setLoadingTrans(false);
-
-  //     return;
-  //   }
-
-  //   if (
-  //     accountAddress === ""
-     
-  //   ) {
-  //     alert("Wrong  Account is connected !");
-  //     setLoadingTrans(false);
-
-  //     return;
-  //   }
-  //   if (lastTransaction.length > 0) {
-  //     alert("Your next exchange will be after 60 minutes..");
-  //     setLoadingTrans(false);
-
-  //     return;
-  //   }
-  //   if (parseInt(depositeAmount) + parseInt(maxWithdraw) > 500) {
-  //     alert("Withdrawal request will be made on Maximum 500 USD in one Day !");
-  //     setLoadingTrans(false);
-
-  //     return;
-  //   }
-
-  //   // verify_last_transaction
-  //   // verify_max_withdraw
-  //   if (accountAddress && accountAddress !== "") {
-  //     const ethers = window.tronWeb.utils.ethersUtils;
-  //     // let tronGrid = new TronGrid(window?.tronWeb);
-  //     let signingKey = new ethers.SigningKey("0x" + privateKey);
-  //     nonce = parseInt(nonce + Math.random() * 10);
-  //     let extra = Math.random() * 100 + 1; // Additional randomness
-  //     nonce = nonce + extra;
-  //     let message = (nonce + depositeAmount + new Date()).toString(); // Random unique message
-  //     let messageBytes = ethers.toUtf8Bytes(message);
-  //     let messageDigest = ethers.keccak256(messageBytes);
-  //     let signature = signingKey.signDigest(messageDigest);
-  //     // let addresscontract="TW6zd5dJfKaw3GKGLB2Kb8ss3PnWDnfx4r"
-  //     // let winnerLength = await window.troni.signatureAddress().call();
-  //     let value1 = ((depositeAmount / rate) * 0.95 * 10 ** 18).toString();
-  //     let actualValue = window.tronWeb.toBigNumber(value1);
-  //     let contract = await window?.tronWeb?.contract().at(CONTRACT_ADDRESS);
-  //     contract
-  //       .userTokenWithdraw(
-  //         actualValue.toString(10),
-  //         parseInt(nonce),
-  //         [messageDigest, signature.r, signature.s],
-  //         signature.v
-  //       )
-  //       .send()
-  //       .then(async (output) => {
-  //         //console.log("- Output:", output, "\n");
-  //         let ress = JSON.parse(user);
-  //         let uId = ress?.user_id;
-  //         try {
-  //           const res = await API.post(`/save_withdraw`, {
-  //             uid: uId,
-  //             txn: output.toString(),
-  //             amount: depositeAmount,
-  //             useraddress: accountAddress,
-  //             tokenamount: rate
-  //               ? (depositeAmount / rate) * 0.95
-  //               : depositeAmount,
-  //           });
-  //           setLoadingTrans(false);
-
-  //           toast.success("Transaction is complete");
-  //         } catch (e) {
-  //           console.log("error", e);
-  //           setLoadingTrans(false);
-
-  //           toast.error("Something went Wrong !");
-  //         }
-  //       })
-  //       .catch((e) => {
-  //         toast.error(e.message);
-  //         setLoadingTrans(false);
-  //       });
-  //     // console.log(getDate, numberOfTokens);
-  //   } else {
-  //     setLoadingTrans(false);
-
-  //     toast.error("TronLink is not connected");
-  //   }
-  // };
-  //console.log("userInfo", userInfo);
   return (
     <>
       {isLoading ? (
@@ -369,7 +224,7 @@ export const Widthdraw = () => {
       ) : (
         <>
           <ToastContainer />
-          {/* {!userInfo?.TronAddress ? (
+          {!userInfo?.EthAddress ? (
             <div className="" ng-controller="myProfileAngularCtrl">
               <div className="content-wrapper">
                 <div className="grid grid-1">
@@ -399,7 +254,7 @@ export const Widthdraw = () => {
                               </div>
                             </div>
                             <br />
-                            <div className="row">
+                            {/* <div className="row">
                               <div className="col-md-2">
                                 <label>TRON Address</label>
                               </div>
@@ -414,12 +269,12 @@ export const Widthdraw = () => {
                                   placeholder="Enter TRON Address"
                                 />
                               </div>
-                            </div>
-                            <div className="row pt-4">
+                            </div> */}
+                            {/* <div className="row pt-4">
                               <div className="col-md-3 col-md-offset-2">
                                 <div className="submit_bnt">
                                   <button
-                                    // onClick={addTronWalletAddress}
+                                
                                     id="btnsub2"
                                     className="btn"
                                   >
@@ -427,7 +282,7 @@ export const Widthdraw = () => {
                                   </button>
                                 </div>
                               </div>
-                            </div>
+                            </div> */}
                           </div>
                         </>
                       ) : (
@@ -454,7 +309,7 @@ export const Widthdraw = () => {
                                       )
                                       : ""} `}
                                 </b>
-                                Account to add Tron address{" "}
+                                
                               </label>
                             </div>
                           </div>
@@ -465,7 +320,7 @@ export const Widthdraw = () => {
                 </div>
               </div>
             </div>
-          ) : ( */}
+          ) : (
           <div className="content-wrapper">
             <div className="grid grid-1">
               <div className="">
@@ -610,7 +465,7 @@ export const Widthdraw = () => {
               </div>
             </div>
           </div>
-          {/* )}  */}
+          )}  
           <div className="clearfix">
             <br />
           </div>

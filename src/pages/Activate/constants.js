@@ -439,8 +439,19 @@ export const abiToken = [{
 
 
 
-export const Withdrwa_Address = "0x4e99b909E38C125CB4B5a8e8365701cBB35777AA";
+export const Withdrwa_Address = "0xEbBAA1A5bcf1AA2347099270E73323A807009ECc";
 export const Withdraw_Abi = [{
+    "constant": false,
+    "inputs": [{
+        "name": "amount",
+        "type": "uint256"
+    }],
+    "name": "withdrawtoken",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+}, {
     "constant": true,
     "inputs": [{
         "name": "",
@@ -517,6 +528,17 @@ export const Withdraw_Abi = [{
 }, {
     "constant": true,
     "inputs": [],
+    "name": "owner",
+    "outputs": [{
+        "name": "",
+        "type": "address"
+    }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+}, {
+    "constant": true,
+    "inputs": [],
     "name": "checkBalance",
     "outputs": [{
         "name": "",
@@ -570,6 +592,17 @@ export const Withdraw_Abi = [{
     "type": "function"
 }, {
     "constant": false,
+    "inputs": [{
+        "name": "amount",
+        "type": "uint256"
+    }],
+    "name": "withdrawbnb",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+}, {
+    "constant": false,
     "inputs": [],
     "name": "BNB_Amount",
     "outputs": [],
@@ -577,11 +610,25 @@ export const Withdraw_Abi = [{
     "stateMutability": "payable",
     "type": "function"
 }, {
+    "constant": true,
+    "inputs": [],
+    "name": "token",
+    "outputs": [{
+        "name": "",
+        "type": "address"
+    }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+}, {
     "inputs": [{
         "name": "_token",
         "type": "address"
     }, {
         "name": "_sigAddress",
+        "type": "address"
+    }, {
+        "name": "_owner",
         "type": "address"
     }],
     "payable": false,

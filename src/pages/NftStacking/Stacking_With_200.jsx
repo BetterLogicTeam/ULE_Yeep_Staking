@@ -21,6 +21,7 @@ export default function Stacking_With_200() {
     let [btnTxt, setBtTxt] = useState("Connect")
     let [connectText, setconnectText] = useState("Metamask Unlocked")
     const [userInfo, setUserInfo] = useState(null);
+    const [Loading, setLoading] = useState("Staking");
   
   
     const user = localStorage.getItem("user");
@@ -261,6 +262,8 @@ export default function Stacking_With_200() {
       let ress = JSON.parse(user);
       let uId_user = ress?.user_id;
       console.log("acc", userInfo);
+      setLoading("Please Wait While Processing")
+
       try {
         if (userInfo.EthAddress == acc) {
           if (tokenid == "") {
@@ -280,6 +283,7 @@ export default function Stacking_With_200() {
               })
   
               toast.success("Successfully Approved")
+              setLoading("Please Wait While Second Processing")
   
               let hash = await ULE_Staking_ContractOf.methods.Stake(tokenid).send({
                 from: acc,
@@ -300,6 +304,7 @@ export default function Stacking_With_200() {
             })
             console.log("Api Resp", postapi);
   
+            setLoading("Staking")
   
               toast.success("Transaction Confirmed")
               // alert("Transaction Confirmed")
@@ -311,6 +316,8 @@ export default function Stacking_With_200() {
               // }
             } else {
               alert("You are not owner of this ID. ")
+        setLoading("Staking")
+
             }
   
   
@@ -319,6 +326,8 @@ export default function Stacking_With_200() {
         } else {
           // alert("Account Mismatch")
           toast.error("Account Mismatch")
+        setLoading("Staking")
+
   
         }
   
@@ -326,6 +335,8 @@ export default function Stacking_With_200() {
       } catch (error) {
         console.log("Erroe While Call Staking Fuction", error);
         toast.error("Transaction Failed")
+        setLoading("Staking")
+
   
       }
     }
