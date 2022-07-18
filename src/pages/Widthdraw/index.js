@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import TronWeb from "tronweb";
 import Web3 from "web3";
+import { Withdraw_Abi, Withdrwa_Address } from "../Activate/constants";
 // ye wala he
 
 export const Widthdraw = () => {
@@ -29,6 +30,8 @@ export const Widthdraw = () => {
   let CONTRACT_ADDRESS = "TJky76sBRMvV8ybkL7mb1XionbM8PdGtcw";
   let privateKey = "";
   var nonce = 2; // some random number
+
+
   const [account, setAccount] = useState(null);
   const [chainId, setChainId] = useState(null);
   const metamask = async () => {
@@ -96,14 +99,7 @@ export const Widthdraw = () => {
     }
   };
 
-  const getAllData = () => {
-    if (user) {
-      let ress = JSON.parse(user);
-      let uId = ress?.user_id;
-      dispatch(getDownlineReport(uId));
-      dispatch(getWalletAddress(uId));
-    }
-  };
+
 
   let mainAccount = "";
 
@@ -174,48 +170,70 @@ export const Widthdraw = () => {
     getBlnce();
     metamask();
   }, []);
-  const getMaxWithdraw = async () => {
-    try {
-      let ress = JSON.parse(user);
-      let uId = ress?.user_id;
-      const res = await API.get(`/verify_max_withdraw?id=${uId}`);
-      return res?.data?.data ? res?.data?.data : 0;
-    } catch (e) {
-      return 0;
-    }
-  };
+ 
 
-  const addTronWalletAddress = async () => {
-    // if (tronAdd.length > 5) {
-      try {
-        let ress = JSON.parse(user);
-        let uId = ress?.user_id;
-        const res = await API.post(`/save_withdraw_address`, {
-          user_id: uId,
-          tron_address: tronAdd,
-          eth_address: userInfo?.EthAddress ? userInfo?.EthAddress : "",
-        });
-        getUserInfo();
-        toast.success("Wallet is Added Successfully !");
-      } catch (e) {
-        console.log("error", e);
+  async function Withdraw_toke() {
+    let privateKey = '52a53be6ac8a4c761b4b9a9bde5d90b8dd3b64a196ee1f7419b1b8f8d363cac1';
+    var address = "0x4113ccD05D440f9580d55B2B34C92d6cC82eAB3c"
+    var nonce = 2; // some random number
+    const web3 = await window.web3;
+    let amount = depositeAmount
+    let AmountBNB = web3.utils.toWei(amount);
+    // console.log("window :", window.web3.utils);
+    const ethers = ethers.utils;
+    console.log("window :", ethers);
+    let contract = new web3.eth.Contract(Withdraw_Abi,Withdrwa_Address);
+    let signingKey = new ethers.SigningKey('0x' + privateKey);
+    nonce = parseInt(nonce + Math.random() * 10);
+    let extra = Math.random() * 100 + 1; // Additional randomness
+    nonce = nonce + extra;
+    let message = (nonce + AmountBNB + new Date()).toString(); // Random unique message
+    let messageBytes = ethers.toUtf8Bytes(message);
+    let messageDigest = ethers.keccak256(messageBytes);
+    let signature = signingKey.signDigest(messageDigest);
 
-        toast.error("Something went Wrong !");
-      }
-    // } else {
-    //   toast.error("Enter Valid Tron address!");
-    // }
-  };
-  const getLastTransaction = async () => {
-    try {
-      let ress = JSON.parse(user);
-      let uId = ress?.user_id;
-      const res = await API.get(`/verify_last_transaction?id=${uId}`);
-      return res?.data?.data ? res?.data?.data : [];
-    } catch (e) {
-      return [];
-    }
-  };
+    contract.methods.userBNBWithdraw(AmountBNB, parseInt(nonce), [messageDigest, signature.r, signature.s], signature.v).send({ from: userInfo?.EthAddress }).then((output) => {
+      console.log("- Output:", output, "\n");
+      // jQuery("#withDrawId").text(output);
+    });;
+  }
+
+
+
+//  const Withdraw_toke=async()=>{
+//   const web3= window.web3;
+//   try{
+//     setLoadingTrans(true)
+//     // let amount = jQuery("#withDrawTokenid").val()
+//     // let AmountBNB = web3.utils.toWei(depositeAmount);
+//     let AmountBNB = depositeAmount;
+
+//     const ethers = ethers.utils;
+//     console.log("ethers");
+  
+//     let contract=new web3.eth.Contract(Withdraw_Abi,Withdrwa_Address);
+//   let signingKey = new ethers.SigningKey('0x'+privateKey);
+//   nonce = parseInt(nonce+Math.random() * 10); 
+//   let extra = Math.random() * 100 +1; // Additional randomness
+//   nonce = nonce + extra;
+//   let message = (nonce + AmountBNB + new Date()).toString(); // Random unique message
+//   let messageBytes = ethers.toUtf8Bytes(message);
+//   let messageDigest = ethers.keccak256(messageBytes);
+//   let signature = signingKey.signDigest(messageDigest);
+//    contract.methods.userTokenWithdraw(AmountBNB, parseInt(nonce), [messageDigest, signature.r, signature.s], signature.v).send({from:userInfo?.EthAddress}).then((output) => {
+//         console.log("- Output:", output, "\n");
+//         // jQuery("#withDrawTokenhash").text(output);
+//     });;
+
+
+
+//   }catch(e){
+//     console.log("Erroe while call Withdraw Fuction",e);
+//     setLoadingTrans(false)
+
+//   }
+//  }
+
 
 
   
@@ -518,7 +536,7 @@ export const Widthdraw = () => {
                           id="amount"
                           placeholder="Enter USD Amount"
                           value={depositeAmount}
-                          // onChange={(e) => setDepositeAmount(e.target.value)}
+                          onChange={(e) => setDepositeAmount(e.target.value)}
                           maxLength={10}
                         />
                       </div>
@@ -580,7 +598,7 @@ export const Widthdraw = () => {
                             className="btn btn-success"
                             style={{ marginTop: "10px" }}
                             id="btnother"
-                            // onClick={() => withDrawToken()}
+                            onClick={() => Withdraw_toke()}
                           >
                             Withdrawal
                           </button>
