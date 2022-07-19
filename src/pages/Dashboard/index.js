@@ -29,6 +29,7 @@ import { API } from "../../store/actions/API";
 import axios from "axios";
 const Dashboard = () => {
   const dashboard = useSelector((state) => state?.dashboard);
+
   const user = localStorage.getItem("user");
   const dispatch = useDispatch();
   const getAllData = () => {
@@ -58,7 +59,7 @@ const Dashboard = () => {
 
 
 
-
+// console.log("DashBordApi",DashBordApi?.userId);
   const getBetaWallet = async () => {
     let ress = JSON.parse(user);
     let uId = ress?.user_id;
@@ -73,7 +74,8 @@ const Dashboard = () => {
 
   const Live_Rate_Api=async() =>{
     try{
-      let resAPI= await axios.get('https://yeepule-nft-api.herokuapp.com/get_betawallet?id=159111')
+    
+      let resAPI= await axios.get(`http://yeepule-nft.herokuapp.com/get_betawallet?id=${dashboard.userId}`)
       console.log("RESAPI_here",resAPI.data.data[0]);
       setEarnAmount(resAPI.data.data[0].EarnAmount)
       setTotalAmount(resAPI.data.data[0].tt)
@@ -88,7 +90,7 @@ const Dashboard = () => {
   useEffect(() => {
     Live_Rate_Api()
     
-  }, [])
+  }, [MaxIncome])
   
   console.log("state", betaWallet);
   return (

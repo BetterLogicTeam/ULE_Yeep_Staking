@@ -11,6 +11,7 @@ import TronWeb from "tronweb";
 import Web3 from "web3";
 import { Withdraw_Abi, Withdrwa_Address } from "../Activate/constants";
 import { ethers } from "ethers";
+import { loadWeb3 } from "../../Api/Api";
 // ye wala he
 
 export const Widthdraw = () => {
@@ -26,6 +27,9 @@ export const Widthdraw = () => {
   const [tronAdd, setTronAdd] = useState("");
   const [isLoading, setLoading] = useState(true);
   const [isLoadingTrans, setLoadingTrans] = useState(false);
+  const [Value_Cal, setValue_Cal] = useState()
+  const [BtnDisable, setBtnDisable] = useState(false)
+
 
   window.troni = {};
 
@@ -105,116 +109,130 @@ export const Widthdraw = () => {
   var nonce = 2; // some random number
   const [accountAddress, setAccountAddress] = useState("");
   const [trxtBalance, setTrxBalance] = useState("0");
-  console.log(trxtBalance);
-  async function Ethereum() {
-    try {
-      //TDVGM9a2BtqfHoG6XyGMR5mtrMAXijmmgk console.log("initial");
-      mainAccount = await window?.tronWeb?.defaultAddress?.base58;
-      console.log("main Account", mainAccount);
+  const [TokenValue, setTokenValue] = useState("0")
 
-      if (mainAccount) {
-        setAccountAddress(mainAccount);
-        localStorage.setItem("mainAccount", mainAccount);
-        console.log("mainAccount", mainAccount);
-        setTimeout(() => {
-          getBalanceOfAccount();
-        }, 100);
-      } else {
-        const HttpProvider = TronWeb.providers.HttpProvider;
-        const fullNode = new HttpProvider("https://api.trongrid.io");
-        const solidityNode = new HttpProvider("https://api.trongrid.io");
-        const eventServer = "https://api.trongrid.io/";
-        const gettronWeb = new TronWeb(fullNode, solidityNode, eventServer);
-        setTimeout(() => {
-          // getData();
-        }, 100);
+  // console.log(trxtBalance);
 
-        // toast.warning("Please login or install tron wallet!");
-      }
-    } catch (error) {
-      toast.error(error.message);
-
-      console.log("error", error.message);
-    }
-  }
   const getBlnce = async () => {
     try {
       let ress = JSON.parse(user);
       let uId = ress?.user_id;
       const res = await API.get(`/net_usd?id=${uId}`);
+      console.log("RESSSS", res);
       setTrxBalance(
         res?.data?.data[0]?.netbal ? res?.data?.data[0]?.netbal : 0
       );
+      setTokenValue(
+        res?.data?.data[0]?.netbal_Token ? res?.data?.data[0]?.netbal_Token : 0
+
+      )
     } catch (e) {
       console.log("error", e);
     }
   };
-  const getBalanceOfAccount = async () => {
-    try {
-      await window.tronWeb.trx.getBalance(mainAccount, function (err, res) {
-        var blnc = parseInt(res) / 1000000;
-        // setTrxBalance(blnc.toFixed(3));
-      });
-    } catch (e) {
-      console.log("blnc", e);
-    }
-  };
+
 
   useEffect(() => {
     setTimeout(() => {
-      Ethereum();
+      // Ethereum();
+      getBlnce();
     }, 2000);
     getUserInfo();
     getLiveRate();
-    getBlnce();
     metamask();
   }, []);
- 
 
 
 
- const Withdraw_toke=async()=>{
-  let CONTRACT_ADDRESS = "TJky76sBRMvV8ybkL7mb1XionbM8PdGtcw";
-  let privateKey = "eff29765d34cc1c58bd3dbfa8d72c6d389f4d2e44221ea5bde9e3b81fd44d533";
-  var nonce = 2; // some random number
-  const web3= window.web3;
-  setLoadingTrans(true)
-  try{
-    // let amount = jQuery("#withDrawTokenid").val()
-    // let AmountBNB = web3.utils.toWei(depositeAmount);
-    let AmountBNB = depositeAmount;
-
-    console.log("ethers",window.ethers.utils);
-    const ethers = window.ethers.utils;
-  
-    let contract=new web3.eth.Contract(Withdraw_Abi,Withdrwa_Address);
-    let signingKey = new ethers.SigningKey('0x'+privateKey);
-    console.log("TAyyab");
-    let extra = Math.random() * 100 +1; // Additional randomness
-  nonce = parseInt(nonce+Math.random() * 10); 
-  nonce = nonce + extra;
-  let message = (nonce + AmountBNB + new Date()).toString(); // Random unique message
-  let messageBytes = ethers.toUtf8Bytes(message);
-  let messageDigest = ethers.keccak256(messageBytes);
-  let signature = signingKey.signDigest(messageDigest);
-   contract.methods.userTokenWithdraw(AmountBNB, parseInt(nonce), [messageDigest, signature.r, signature.s], signature.v).send({from:userInfo?.EthAddress}).then((output) => {
-        console.log("- Output:", output, "\n");
-        // jQuery("#withDrawTokenhash").text(output);
-    });;
-    setLoadingTrans(false)
 
 
+  const Withdraw_toke = async () => {
+    let CONTRACT_ADDRESS = "TJky76sBRMvV8ybkL7mb1XionbM8PdGtcw";
+    let privateKey = "eff29765d34cc1c58bd3dbfa8d72c6d389f4d2e44221ea5bde9e3b81fd44d533";
+    var nonce = 2; // some random number
+    const web3 = window.web3;
+    const acc = await loadWeb3()
+    setLoadingTrans(true)
+    try {
+      if (acc == userInfo?.EthAddress) {
+        let AmountBNB = depositeAmount;
 
-  }catch(e){
-    setLoadingTrans(false)
-    console.log("Erroe while call Withdraw Fuction",e);
+        let res = await axios.post('https://yeepule-nft.herokuapp.com/get_usd_value', {
 
+          "tokenamount": depositeAmount
+
+        })
+        console.log("res", res.data.data);
+        setValue_Cal(res.data.data)
+        let ress = JSON.parse(user);
+        let uId = ress?.user_id;
+        let res_Condition = await axios.post('https://yeepule-nft.herokuapp.com/withdrawlCondition', {
+          "uid": uId,
+          "amount": res.data.data,
+          "tokenamount": depositeAmount
+
+        })
+
+        // console.log("res_Condition", res_Condition.data.data);
+        if (res_Condition.data.data == "Your next Withdrawal will be after 2 hours ...") {
+          setBtnDisable(true)
+        } else {
+          if (res_Condition.data.data == "Success") {
+            const ethers = window.ethers.utils;
+            let contract = new web3.eth.Contract(Withdraw_Abi, Withdrwa_Address);
+            let signingKey = new ethers.SigningKey('0x' + privateKey);
+            let extra = Math.random() * 100 + 1; // Additional randomness
+            nonce = parseInt(nonce + Math.random() * 10);
+            nonce = nonce + extra;
+            let message = (nonce + AmountBNB + new Date()).toString(); // Random unique message
+            let messageBytes = ethers.toUtf8Bytes(message);
+            let messageDigest = ethers.keccak256(messageBytes);
+            let signature = signingKey.signDigest(messageDigest);
+            console.log("Test");
+            let hash = contract.methods.userTokenWithdraw(AmountBNB, parseInt(nonce), [messageDigest, signature.r, signature.s], signature.v).send({ from: userInfo?.EthAddress }).then((output) => {
+
+            });
+            hash = hash.transactionHash
+
+            let Final_Res = await axios.post('https://yeepule-nft.herokuapp.com/save_withdraw', {
+              "uid": uId,
+              "address": userInfo?.EthAddress,
+              "amount": AmountBNB,
+              "tokenvalue": depositeAmount,
+              "txn":hash
+
+            })
+
+
+
+            setLoadingTrans(false)
+          } else {
+            toast.error(res_Condition.data.data)
+            setLoadingTrans(false)
+
+          }
+        }
+      } else {
+        toast.error("Account Mismatch")
+        setLoadingTrans(false)
+
+
+      }
+
+
+
+
+
+    } catch (e) {
+      setLoadingTrans(false)
+      console.log("Erroe while call Withdraw Fuction", e);
+
+    }
   }
- }
 
 
 
-  
+
   return (
     <>
       {isLoading ? (
@@ -309,7 +327,7 @@ export const Widthdraw = () => {
                                       )
                                       : ""} `}
                                 </b>
-                                
+
                               </label>
                             </div>
                           </div>
@@ -321,37 +339,37 @@ export const Widthdraw = () => {
               </div>
             </div>
           ) : (
-          <div className="content-wrapper">
-            <div className="grid grid-1">
-              <div className="">
-                <div className="section-heading">
-                  <h2>Withdrawal</h2>
-                 
-                </div>
+            <div className="content-wrapper">
+              <div className="grid grid-1">
+                <div className="">
+                  <div className="section-heading">
+                    <h2>Withdrawal</h2>
 
-                <div className="box box-default table-wrapper ">
-                  <div className="panel-body">
-                    {/* <span className="metamaskConnection" style={{color:"red"}}>Metamask is not connected..!..Wait...</span> */}
-                    <br />
-                    <br />
-                    <br />
-                    <div className="row">
-                      <div className="col-md-2">
-                        <label>Metamask Address</label>
+                  </div>
+
+                  <div className="box box-default table-wrapper ">
+                    <div className="panel-body">
+                      {/* <span className="metamaskConnection" style={{color:"red"}}>Metamask is not connected..!..Wait...</span> */}
+                      <br />
+                      <br />
+                      <br />
+                      <div className="row">
+                        <div className="col-md-2">
+                          <label>Metamask Address</label>
+                        </div>
+                        <div className="col-md-3">
+                          <input
+                            type="text"
+                            id="EthAddress"
+                            name="EthAddress"
+                            className="form-control mb-20"
+                            value={userInfo?.EthAddress}
+                            disabled={true}
+                            placeholder="Enter ETH Address"
+                          />
+                        </div>
                       </div>
-                      <div className="col-md-3">
-                        <input
-                          type="text"
-                          id="EthAddress"
-                          name="EthAddress"
-                          className="form-control mb-20"
-                          value={userInfo?.EthAddress}
-                          disabled={true}
-                          placeholder="Enter ETH Address"
-                        />
-                      </div>
-                    </div>
-                    {/* <div className="row mt-3 mb-3">
+                      {/* <div className="row mt-3 mb-3">
                       <div className="col-md-2">
                         <label>TRON Address</label>
                       </div>
@@ -367,105 +385,132 @@ export const Widthdraw = () => {
                         />
                       </div>
                     </div> */}
-                    <div className="row mt-5">
-                      <div className="col-md-2">
-                        <label>Wallet Net USD Value</label>
+                      <div className="row mt-5">
+                        <div className="col-md-2">
+                          <label>Wallet Net USD Value</label>
+                        </div>
+                        <div className="col-md-3">
+                          <label className="form-control d-flex align-items-center">
+                            {trxtBalance}
+                          </label>
+                        </div>
                       </div>
-                      <div className="col-md-3">
-                        <label className="form-control d-flex align-items-center">
-                          {trxtBalance}
-                        </label>
-                      </div>
-                    </div>
 
-                    <br />
-
-                    <div className="row">
-                      <div className="col-md-2">
-                        <label>Enter USD Amount </label>
+                      <div className="row mt-5">
+                        <div className="col-md-2">
+                          <label>Wallet Net Token Value</label>
+                        </div>
+                        <div className="col-md-3">
+                          <label className="form-control d-flex align-items-center">
+                            {TokenValue}
+                          </label>
+                        </div>
                       </div>
-                      <div className="col-md-3">
-                        <input
-                          type="text"
-                          className="form-control mb-20 ng-pristine ng-untouched ng-valid ng-empty ng-valid-maxlength"
-                          id="amount"
-                          placeholder="Enter USD Amount"
-                          value={depositeAmount}
-                          onChange={(e) => setDepositeAmount(e.target.value)}
-                          maxLength={10}
-                        />
-                      </div>
-                    </div>
 
-                    <div className="row mrset mt-5" id="withdrwaltokendiv">
-                      <div className="col-md-2">
-                        <label>Withdrawal Token </label>
-                      </div>
-                      <div className="col-md-3">
-                        <input
-                          type="text"
-                          className="form-control ng-pristine ng-untouched ng-valid ng-empty"
-                          value={rate ? (depositeAmount / rate) * 0.95 : 0}
-                          placeholder="Withdrwal Token "
-                          disabled={true}
-                        />
-                      </div>
-                    </div>
+                      <br />
 
-                    <input
-                      type="hidden"
-                      id="address"
-                      className="form-control ng-pristine ng-untouched ng-valid ng-empty"
-                      value=""
-                      autoComplete="off"
-                    />
-                    <input
-                      type="hidden"
-                      id="userid"
-                      className="form-control ng-pristine ng-untouched ng-valid ng-empty"
-                      value=""
-                      autoComplete="off"
-                    />
-                    <input
-                      type="hidden"
-                      id="withdrawalvalidate"
-                      className="form-control ng-pristine ng-untouched ng-valid ng-empty"
-                      value=""
-                      autoComplete="off"
-                    />
+                      <div className="row">
+                        <div className="col-md-2">
+                          <label>Enter Token Amount </label>
+                        </div>
+                        <div className="col-md-3">
+                          <input
+                            type="text"
+                            className="form-control mb-20 ng-pristine ng-untouched ng-valid ng-empty ng-valid-maxlength"
+                            id="amount"
+                            placeholder="Enter Token Amount"
+                            value={depositeAmount}
+                            onChange={(e) => setDepositeAmount(e.target.value)}
+                            maxLength={10}
+                          />
+                        </div>
+                      </div>
 
-                    <div className="row">
-                      <div className="col-md-3 col-md-offset-2">
-                        {isLoadingTrans ? (
-                          <button
-                            className="btn btn-success"
-                            style={{ marginTop: "10px" }}
-                            id="btnother"
-                          >
-                            <div
-                              className="loaders"
-                              style={{ height: "30px", width: "30px" }}
-                            ></div>
-                            Transaction is in progress
-                          </button>
-                        ) : (
-                          <button
-                            className="btn btn-success"
-                            style={{ marginTop: "10px" }}
-                            id="btnother"
-                            onClick={() => Withdraw_toke()}
-                          >
-                            Withdrawal
-                          </button>
-                        )}
+                      <div className="row mrset mt-5" id="withdrwaltokendiv">
+                        <div className="col-md-2">
+                          <label>Withdrawal Token </label>
+                        </div>
+                        <div className="col-md-3">
+                          <input
+                            type="text"
+                            className="form-control ng-pristine ng-untouched ng-valid ng-empty"
+                            value={rate ? (depositeAmount) * 0.95 : 0}
+                            placeholder="Withdrwal Token "
+                            disabled={true}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="row mrset mt-5" id="withdrwaltokendiv">
+                        <div className="col-md-2">
+                          <label>Calculate USD value </label>
+                        </div>
+                        <div className="col-md-3">
+                          <input
+                            type="text"
+                            className="form-control ng-pristine ng-untouched ng-valid ng-empty"
+                            value={Value_Cal}
+                            placeholder="Calculate USD value"
+                            disabled={true}
+                          />
+                        </div>
+                      </div>
+
+                      <input
+                        type="hidden"
+                        id="address"
+                        className="form-control ng-pristine ng-untouched ng-valid ng-empty"
+                        value=""
+                        autoComplete="off"
+                      />
+                      <input
+                        type="hidden"
+                        id="userid"
+                        className="form-control ng-pristine ng-untouched ng-valid ng-empty"
+                        value=""
+                        autoComplete="off"
+                      />
+                      <input
+                        type="hidden"
+                        id="withdrawalvalidate"
+                        className="form-control ng-pristine ng-untouched ng-valid ng-empty"
+                        value=""
+                        autoComplete="off"
+                      />
+
+                      <div className="row">
+                        <div className="col-md-3 col-md-offset-2">
+                          {isLoadingTrans ? (
+                            <button
+                              className="btn btn-success"
+                              style={{ marginTop: "10px" }}
+                              id="btnother"
+                            >
+                              <div
+                                className="loaders"
+                                style={{ height: "30px", width: "30px" }}
+                              ></div>
+                              Transaction is in progress
+                            </button>
+                          ) : (
+                            <button
+                              className="btn btn-success"
+                              style={{ marginTop: "10px" }}
+                              id="btnother"
+                              disabled={BtnDisable}
+                              onClick={() => Withdraw_toke()}
+                            >
+                              Withdrawal
+                            </button>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          )}  
+          )}
           <div className="clearfix">
             <br />
           </div>

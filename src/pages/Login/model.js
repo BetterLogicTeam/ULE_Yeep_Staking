@@ -13,12 +13,14 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 import { loginAction } from "../../store/actions/login";
-import {useDispatch} from "react-redux";
-import {useHistory} from "react-router-dom"
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom"
 export default function FormDialog({ setRegistered }) {
-  const history=useHistory();
-  const dispatch=useDispatch()
+  const history = useHistory();
+  const dispatch = useDispatch()
   const [open, setOpen] = React.useState(false);
+  const [RefID, setRefID] = useState()
+  const user = localStorage.getItem("user");
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -61,8 +63,46 @@ export default function FormDialog({ setRegistered }) {
     }
   };
 
+
+
+  const ReferralAddress = async () => {
+    const user = localStorage.getItem("user");
+
+    let ress = JSON.parse(user);
+    let uId = ress?.user_id;
+    console.log("UID", uId);
+    try {
+
+      let URL = window.location.href;
+
+
+      // const str = 'https://www.ulenft.network/login?referrallink=464867';
+      // var pathArray = str.split( '=' );
+      // alert(pathArray[pathArray.length-1]);
+      // console.log("last",pathArray[pathArray.length-1])
+      console.log("LAST", URL);
+
+      if (URL.includes("referrallink")) {
+        let pathArray = URL.split('=');
+        console.log("LAST");
+        setRefID(pathArray[pathArray.length - 1])
+
+
+      } else {
+
+      }
+
+
+
+    } catch (e) {
+      console.log("Erroe Whille Referral Fuction Call", e);
+    }
+  }
+
   const registered = async () => {
     try {
+      console.log("SID", sId);
+      alert(`Are You Sure! Your referral ID is This: ${sId}`)
       const res = await API.post(`/registraction`, {
         sid: sId,
         uid: "",
@@ -97,6 +137,7 @@ export default function FormDialog({ setRegistered }) {
   };
   useEffect(() => {
     metamask();
+    ReferralAddress()
   }, []);
   return (
     <div>
@@ -124,7 +165,7 @@ export default function FormDialog({ setRegistered }) {
             type="number"
             placeholder="Please enter upline ID or referral link "
             fullWidth
-            value={sId}
+            value={RefID}
             onChange={(e) => setSId(e.target.value)}
           />
           <DialogContentText className="mt-1 textStyle">

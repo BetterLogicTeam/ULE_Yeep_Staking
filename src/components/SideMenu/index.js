@@ -135,7 +135,7 @@ export const SideMenu = ({ hiddenSideMenu, setHidden }) => {
                 type="text"
                 className="wdg-input-box"
                 id="myInput1"
-                value={`https://www.ulenft.network/registration?referrallink=${dashboard?.userId}`}
+                value={`https://www.ulenft.network/login?referrallink=${dashboard?.userId}`}
               />
 
               <div className="fast-msg-box"></div>
@@ -143,7 +143,7 @@ export const SideMenu = ({ hiddenSideMenu, setHidden }) => {
           )}
           <div className="wdg-actions">
             <CopyToClipboard
-              text={`https://www.ulenft.network/registration?referrallink=${dashboard?.userId}`}
+              text={`https://www.ulenft.network/login?referrallink=${dashboard?.userId}`}
               onCopy={() => setCopied(true)}
             >
               <button type="button">
