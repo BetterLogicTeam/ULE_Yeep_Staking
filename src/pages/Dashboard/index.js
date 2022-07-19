@@ -66,6 +66,9 @@ const Dashboard = () => {
     try {
       const res = await API.get(`/get_betawallet?id=${uId}`);
       setBetaWallet(res?.data.data[0]);
+      setEarnAmount(res.data.data[0].EarnAmount)
+      setTotalAmount(res.data.data[0].tt)
+      setMaxIncome(res.data.data[0].MaxIncome)
     } catch (e) {
       console.log("error", e);
     }
@@ -74,12 +77,12 @@ const Dashboard = () => {
 
   const Live_Rate_Api=async() =>{
     try{
+
+      console.log("dashboard.userId",dashboard.userId);
     
       let resAPI= await axios.get(`http://yeepule-nft.herokuapp.com/get_betawallet?id=${dashboard.userId}`)
       console.log("RESAPI_here",resAPI.data.data[0]);
-      setEarnAmount(resAPI.data.data[0].EarnAmount)
-      setTotalAmount(resAPI.data.data[0].tt)
-      setMaxIncome(resAPI.data.data[0].MaxIncome)
+      
 
     }catch(e){
       console.log("Live Rate Api",e);
@@ -92,7 +95,7 @@ const Dashboard = () => {
     
   }, [MaxIncome])
   
-  console.log("state", betaWallet);
+  console.log("state test", betaWallet);
   return (
     <div class="content-wrapper">
       <link
