@@ -86,6 +86,7 @@ export default function FormDialog({ setRegistered }) {
         let pathArray = URL.split('=');
         console.log("LAST");
         setRefID(pathArray[pathArray.length - 1])
+        setSId(pathArray[pathArray.length - 1])
 
 
       } else {
